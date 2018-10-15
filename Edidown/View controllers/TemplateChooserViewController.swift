@@ -19,6 +19,9 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
         
         /// An HTML document.
         case html
+        
+        /// A plain text document.
+        case txt
     }
     
     /// Code called when a template is selected. Its value should be `importHandler` given by `UIDocumentBrowserViewController.documentBrowser(_:, didRequestDocumentCreationWithHandler:)`.
@@ -64,6 +67,13 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
         } else if type == .html, let templatesDict = NSDictionary(contentsOf: plistURL)?["HTML"] as? [String:String] {
             
             templatesURL.appendPathComponent("HTML")
+            
+            for file in templatesDict {
+                templates[file.key] = templatesURL.appendingPathComponent(file.value)
+            }
+        } else if type == .txt, let templatesDict = NSDictionary(contentsOf: plistURL)?["TXT"] as? [String:String] {
+            
+            templatesURL.appendPathComponent("TXT")
             
             for file in templatesDict {
                 templates[file.key] = templatesURL.appendingPathComponent(file.value)

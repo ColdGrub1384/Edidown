@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>TXT</key>
+	<dict>
+		<key>Blank document</key>
+		<string>Untitled.txt</string>
+	</dict>
 	<key>HTML</key>
 	<dict>
 		<key>Blank document</key>
