@@ -76,6 +76,89 @@ class DocumentViewController: UIViewController {
         present(navVC, animated: true, completion: nil)
     }
     
+    /// Exports file.
+    @objc func export(_ sender: UIBarButtonItem) {
+        
+        guard let url = document?.fileURL else {
+            return
+        }
+        
+        func share(file: URL) {
+            let controller = UIDocumentInteractionController(url: file)
+            controller.presentOptionsMenu(from: sender, animated: true)
+        }
+        
+        if pathExtension == "html" {
+            let sheet = UIAlertController(title: "Export", message: "Please choose a format to export '\(url.lastPathComponent)'", preferredStyle: .actionSheet)
+            
+            sheet.addAction(UIAlertAction(title: "HTML", style: .default, handler: { (_) in
+                share(file: url)
+            }))
+            
+            sheet.addAction(UIAlertAction(title: "RTF", style: .default, handler: { (_) in // Export to RTF
+                let fileURL = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0].appendingPathComponent(url.lastPathComponent).deletingPathExtension().appendingPathExtension("rtf")
+                do {
+                    guard let data = self.textView.text.data(using: .utf8) else {
+                        self.presentMessage("An error occurred while encoding data.", withTitle: "Error exporting file!")
+                        return
+                    }
+                    let string = try NSAttributedString(data: data, options: [NSAttributedString.DocumentReadingOptionKey.documentType : NSAttributedString.DocumentType.html], documentAttributes: nil)
+                    if FileManager.default.createFile(atPath: fileURL.path, contents: try string.data(from: NSRange(location: 0, length: string.length), documentAttributes: [.documentType : NSAttributedString.DocumentType.rtf]), attributes: nil) {
+                        share(file: fileURL)
+                    } else {
+                        self.presentMessage("An error occurred while creating file.", withTitle: "Error exporting file!")
+                    }
+                } catch {
+                    self.presentError(error, withTitle: "Error exporting file!")
+                }
+            }))
+            
+            sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            sheet.popoverPresentationController?.barButtonItem = sender
+            present(sheet, animated: true, completion: nil)
+        } else if pathExtension == "md" || pathExtension == "markdown" {
+            
+            let down = Down(markdownString: self.textView.text)
+            
+            let sheet = UIAlertController(title: "Export", message: "Please choose a format to export '\(url.lastPathComponent)'", preferredStyle: .actionSheet)
+            
+            sheet.addAction(UIAlertAction(title: "Markdown", style: .default, handler: { (_) in
+                share(file: url)
+            }))
+            
+            sheet.addAction(UIAlertAction(title: "HTML", style: .default, handler: { (_) in // Export to HTML
+                let fileURL = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0].appendingPathComponent(url.lastPathComponent).deletingPathExtension().appendingPathExtension("html")
+                do {
+                    if FileManager.default.createFile(atPath: fileURL.path, contents: (try down.toHTML()).data(using: .utf8), attributes: nil) {
+                        share(file: fileURL)
+                    } else {
+                        self.presentMessage("An error occurred creating file.", withTitle: "Error exporting file!")
+                    }
+                } catch {
+                    self.presentError(error, withTitle: "Error exporting file!")
+                }
+            }))
+            
+            sheet.addAction(UIAlertAction(title: "RTF", style: .default, handler: { (_) in // Export to RTF
+                let fileURL = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0].appendingPathComponent(url.lastPathComponent).deletingPathExtension().appendingPathExtension("rtf")
+                do {
+                    let string = try down.toAttributedString()
+                    if FileManager.default.createFile(atPath: fileURL.path, contents: try string.data(from: NSRange(location: 0, length: string.length), documentAttributes: [.documentType : NSAttributedString.DocumentType.rtf]), attributes: nil) {
+                        share(file: fileURL)
+                    } else {
+                        self.presentMessage("An error occurred creating file.", withTitle: "Error exporting file!")
+                    }
+                } catch {
+                    self.presentError(error, withTitle: "Error exporting file!")
+                }
+            }))
+            
+            sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            sheet.popoverPresentationController?.barButtonItem = sender
+            present(sheet, animated: true, completion: nil)
+        }
+    }
+    
     /// Called to change between edit and preview mode.
     ///
     /// - Parameters:
@@ -148,12 +231,14 @@ class DocumentViewController: UIViewController {
             isDocumentOpen = true
             document?.open(completionHandler: { (success) in
                 if success {
-                    // Display the content of the document, e.g.:
                     self.title = self.document?.fileURL.lastPathComponent
                     self.textView.text = self.document?.text
+                    
+                    self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(self.export(_:)))
+                    
                     if self.pathExtension == "md" || self.pathExtension == "markdown" {
                         self.textStorage.language = "markdown"
-                        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.showHeaders(_:)))
+                        self.navigationItem.leftBarButtonItems?.append(UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.showHeaders(_:))))
                     } else if self.pathExtension == "html" || self.pathExtension == "htm" {
                         self.textStorage.language = "xml"
                     }
