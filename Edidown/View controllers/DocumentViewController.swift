@@ -127,7 +127,7 @@ class DocumentViewController: UIViewController {
             present(sheet, animated: true, completion: nil)
         } else if pathExtension == "md" || pathExtension == "markdown" {
             
-            let down = Down(markdownString: self.textView.text)
+            let html = ParseMarkdown(textView.text)
             
             let sheet = UIAlertController(title: "Export", message: "Please choose a format to export '\(url.lastPathComponent)'", preferredStyle: .actionSheet)
             
@@ -137,21 +137,17 @@ class DocumentViewController: UIViewController {
             
             sheet.addAction(UIAlertAction(title: "HTML", style: .default, handler: { (_) in // Export to HTML
                 let fileURL = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0].appendingPathComponent(url.lastPathComponent).deletingPathExtension().appendingPathExtension("html")
-                do {
-                    if FileManager.default.createFile(atPath: fileURL.path, contents: (try down.toHTML()).data(using: .utf8), attributes: nil) {
-                        share(file: fileURL)
-                    } else {
-                        self.presentMessage("An error occurred creating file.", withTitle: "Error exporting file!")
-                    }
-                } catch {
-                    self.presentError(error, withTitle: "Error exporting file!")
+                if FileManager.default.createFile(atPath: fileURL.path, contents: html.data(using: .utf8), attributes: nil) {
+                    share(file: fileURL)
+                } else {
+                    self.presentMessage("An error occurred creating file.", withTitle: "Error exporting file!")
                 }
             }))
             
             sheet.addAction(UIAlertAction(title: "RTF", style: .default, handler: { (_) in // Export to RTF
                 let fileURL = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0].appendingPathComponent(url.lastPathComponent).deletingPathExtension().appendingPathExtension("rtf")
                 do {
-                    let string = try down.toAttributedString()
+                    let string = try Down(markdownString: html).toAttributedString()
                     if FileManager.default.createFile(atPath: fileURL.path, contents: try string.data(from: NSRange(location: 0, length: string.length), documentAttributes: [.documentType : NSAttributedString.DocumentType.rtf]), attributes: nil) {
                         share(file: fileURL)
                     } else {
@@ -182,11 +178,7 @@ class DocumentViewController: UIViewController {
         }
         
         if pathExtension == "md" || pathExtension == "markdown" {
-            do {
-                webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+(try Down(markdownString: textView.text).toHTML()), baseURL: nil)
-            } catch {
-                webView.loadHTMLString(DocumentViewController.htmlHead+error.localizedDescription, baseURL: nil)
-            }
+            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+ParseMarkdown(textView.text), baseURL: nil)
         } else if pathExtension == "html" || pathExtension == "htm" {
             webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+textView.text, baseURL: nil)
         }
