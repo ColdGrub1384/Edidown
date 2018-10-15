@@ -7,12 +7,28 @@
 //
 
 import UIKit
-import MarkdownTextView
 import WebKit
 import Down
+import Highlightr
 
 /// The View controller for editing a Markdown file.
 class DocumentViewController: UIViewController {
+    
+    /// HTML code to be shown before the markdown or HTMl content. Put styles and metas.
+    static var htmlHead: String {
+        do {
+            if let url = Bundle.main.url(forResource: "body", withExtension: "html") {
+                return try String(contentsOf: url)
+            } else {
+                return ""
+            }
+        } catch {
+            return ""
+        }
+    }
+    
+    /// The text storage used in `textView`.
+    let textStorage = CodeAttributedString()
     
     /// The Text view containing the raw content.
     var textView: UITextView!
@@ -31,9 +47,9 @@ class DocumentViewController: UIViewController {
         webView.isHidden = (sender.selectedSegmentIndex == 0)
         textView.isHidden = !webView.isHidden
         do {
-            webView.loadHTMLString("<meta name='viewport' content='width=device-width, initial-scale=1.0'> <style> * { font-family: 'Helvetica', 'Arial', sans-serif; } </style>"+(try Down(markdownString: textView.text).toHTML()), baseURL: nil)
+            webView.loadHTMLString(DocumentViewController.htmlHead+(try Down(markdownString: textView.text).toHTML()), baseURL: nil)
         } catch {
-            webView.loadHTMLString("<meta name='viewport' content='width=device-width, initial-scale=1.0'><br/>"+error.localizedDescription, baseURL: nil)
+            webView.loadHTMLString(DocumentViewController.htmlHead+error.localizedDescription, baseURL: nil)
         }
         
     }
@@ -63,7 +79,17 @@ class DocumentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        textView = MarkdownTextView(frame: .zero)
+        textStorage.language = "markdown"
+        textStorage.highlightr.setTheme(to: "xcode")
+        let layoutManager = NSLayoutManager()
+        textStorage.addLayoutManager(layoutManager)
+        
+        let textContainer = NSTextContainer()
+        layoutManager.addTextContainer(textContainer)
+        
+        textView = UITextView(frame: .zero, textContainer: textContainer)
+        textView.smartDashesType = .no
+        textView.smartQuotesType = .no
         view.addSubview(textView)
         
         webView = WKWebView(frame: view.frame)
@@ -93,6 +119,7 @@ class DocumentViewController: UIViewController {
         super.viewDidAppear(animated)
         
         textView.frame = view.safeAreaLayoutGuide.layoutFrame
+        webView.frame = textView.frame
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -104,6 +131,7 @@ class DocumentViewController: UIViewController {
         
         _ = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
             self.textView.frame = self.view.safeAreaLayoutGuide.layoutFrame
+            self.webView.frame = self.textView.frame
         }) // TODO: Anyway to to it without a timer?
     }
     

@@ -1,6 +1,6 @@
 [submodule "Down"]
 	path = Down
 	url = https://github.com/iwasrobbed/Down.git
-[submodule "MarkdownTextView"]
-	path = MarkdownTextView
-	url = https://github.com/leonardo-hammer/MarkdownTextView
+[submodule "Highlightr"]
+	path = Highlightr
+	url = https://github.com/raspu/Highlightr.git
