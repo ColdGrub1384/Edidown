@@ -230,7 +230,8 @@ class DocumentViewController: UIViewController {
         textView.smartQuotesType = .no
         view.addSubview(textView)
         
-        webView = WKWebView(frame: view.frame)
+        webView = WKWebView(frame: .zero)
+        webView.configuration.preferences.javaScriptEnabled = false
         webView.isHidden = true
         view.addSubview(webView)
         
