@@ -14,6 +14,9 @@ import Highlightr
 /// The View controller for editing a Markdown file.
 class DocumentViewController: UIViewController {
     
+    /// The segmented control for switching between edition and preview.
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    
     /// HTML code to be shown before the markdown or HTMl content. Put styles and metas.
     static var htmlHead: String {
         do {
@@ -161,6 +164,8 @@ class DocumentViewController: UIViewController {
             sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             sheet.popoverPresentationController?.barButtonItem = sender
             present(sheet, animated: true, completion: nil)
+        } else {
+            share(file: url)
         }
     }
     
@@ -210,6 +215,8 @@ class DocumentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        segmentedControl.isHidden = true
+        
         textStorage.highlightr.setTheme(to: "xcode")
         let layoutManager = NSLayoutManager()
         textStorage.addLayoutManager(layoutManager)
@@ -245,11 +252,14 @@ class DocumentViewController: UIViewController {
                     self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(self.export(_:)))
                     
                     if self.pathExtension == "md" || self.pathExtension == "markdown" {
+                        self.segmentedControl.isHidden = false
                         self.textStorage.language = "markdown"
                         self.navigationItem.leftBarButtonItems?.append(UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.showHeaders(_:))))
                     } else if self.pathExtension == "html" || self.pathExtension == "htm" {
+                        self.segmentedControl.isHidden = false
                         self.textStorage.language = "xml"
                     }
+                    
                 } else {
                     // TODO: Handle error
                 }

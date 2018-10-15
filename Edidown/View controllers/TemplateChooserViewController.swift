@@ -97,12 +97,14 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
     /// Changes between Markdown and HTML templates depending on `sender` state.
     ///
     /// - Parameters:
-    ///     - sender: If its selected segment index is `0`, `type` will be `markdown` and if is `1`, `type` will be `html`.
+    ///     - sender: If its selected segment index is `0`, `type` will be `markdown`, if is `1`, `type` will be `html` and `txt` if is `2`.
     @IBAction func changeMode(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
             type = .markdown
         } else if sender.selectedSegmentIndex == 1 {
             type = .html
+        } else if sender.selectedSegmentIndex == 2 {
+            type = .txt
         }
     }
     
