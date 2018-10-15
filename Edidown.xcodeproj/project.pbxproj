@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */; };
+		C9EF7DEC217512190055DFDF /* String+ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DEB217512190055DFDF /* String+ranges.swift */; };
+		C9EF7DF0217518060055DFDF /* NSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DEF217518060055DFDF /* NSRange.swift */; };
 		C9F04E9A2173EDFA00BDD03E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F04E992173EDFA00BDD03E /* AppDelegate.swift */; };
 		C9F04E9C2173EDFA00BDD03E /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F04E9B2173EDFA00BDD03E /* DocumentBrowserViewController.swift */; };
 		C9F04E9E2173EDFA00BDD03E /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F04E9D2173EDFA00BDD03E /* DocumentViewController.swift */; };
@@ -85,6 +88,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersTableViewController.swift; sourceTree = "<group>"; };
+		C9EF7DEB217512190055DFDF /* String+ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ranges.swift"; sourceTree = "<group>"; };
+		C9EF7DEF217518060055DFDF /* NSRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRange.swift; sourceTree = "<group>"; };
 		C9F04E962173EDFA00BDD03E /* Edidown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Edidown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9F04E992173EDFA00BDD03E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9F04E9B2173EDFA00BDD03E /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
@@ -139,8 +145,11 @@
 				C9F04E992173EDFA00BDD03E /* AppDelegate.swift */,
 				C9F04E9B2173EDFA00BDD03E /* DocumentBrowserViewController.swift */,
 				C9F04E9D2173EDFA00BDD03E /* DocumentViewController.swift */,
+				C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */,
 				C9F04F102174E92900BDD03E /* TemplateChooserViewController.swift */,
 				C9F04E9F2173EDFA00BDD03E /* Document.swift */,
+				C9EF7DEB217512190055DFDF /* String+ranges.swift */,
+				C9EF7DEF217518060055DFDF /* NSRange.swift */,
 				C9F04F0E2174E66800BDD03E /* body.html */,
 				C9F04EA12173EDFA00BDD03E /* Main.storyboard */,
 				C9F04EA42173EDFC00BDD03E /* Assets.xcassets */,
@@ -290,8 +299,11 @@
 			files = (
 				C9F04EA02173EDFA00BDD03E /* Document.swift in Sources */,
 				C9F04F112174E92900BDD03E /* TemplateChooserViewController.swift in Sources */,
+				C9EF7DEC217512190055DFDF /* String+ranges.swift in Sources */,
 				C9F04E9E2173EDFA00BDD03E /* DocumentViewController.swift in Sources */,
 				C9F04E9C2173EDFA00BDD03E /* DocumentBrowserViewController.swift in Sources */,
+				C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */,
+				C9EF7DF0217518060055DFDF /* NSRange.swift in Sources */,
 				C9F04E9A2173EDFA00BDD03E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

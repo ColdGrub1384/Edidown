@@ -44,6 +44,38 @@ class DocumentViewController: UIViewController {
         return document?.fileURL.pathExtension.lowercased()
     }
     
+    /// If the document is opened.
+    var isDocumentOpen = false
+    
+    /// Shows headers of markdown file.
+    @objc func showHeaders(_ sender: UIBarButtonItem) {
+        
+        let vc = HeadersTableViewController()
+        var headers = [String]()
+        var indexes = [String:Int]()
+        for line in textView.text.components(separatedBy: .newlines) {
+            if line.hasPrefix("#") {
+                headers.append(line)
+                if indexes[line] == nil {
+                    indexes[line] = 0
+                } else {
+                    indexes[line] = indexes[line]!+1
+                }
+                vc.headersRanges.append(textView.text.ranges(of: line)[indexes[line]!])
+            }
+        }
+        vc.headers = headers
+        vc.selectionHandler = { range in
+            self.textView.becomeFirstResponder()
+            self.textView.selectedRange = NSRange(range, in: self.textView.text)
+        }
+        
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .popover
+        navVC.popoverPresentationController?.barButtonItem = sender
+        present(navVC, animated: true, completion: nil)
+    }
+    
     /// Called to change between edit and preview mode.
     ///
     /// - Parameters:
@@ -112,20 +144,24 @@ class DocumentViewController: UIViewController {
         super.viewWillAppear(animated)
         
         // Access the document
-        document?.open(completionHandler: { (success) in
-            if success {
-                // Display the content of the document, e.g.:
-                self.title = self.document?.fileURL.lastPathComponent
-                self.textView.text = self.document?.text
-                if self.pathExtension == "md" || self.pathExtension == "markdown" {
-                    self.textStorage.language = "markdown"
-                } else if self.pathExtension == "html" || self.pathExtension == "htm" {
-                    self.textStorage.language = "xml"
+        if !isDocumentOpen {
+            isDocumentOpen = true
+            document?.open(completionHandler: { (success) in
+                if success {
+                    // Display the content of the document, e.g.:
+                    self.title = self.document?.fileURL.lastPathComponent
+                    self.textView.text = self.document?.text
+                    if self.pathExtension == "md" || self.pathExtension == "markdown" {
+                        self.textStorage.language = "markdown"
+                        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.showHeaders(_:)))
+                    } else if self.pathExtension == "html" || self.pathExtension == "htm" {
+                        self.textStorage.language = "xml"
+                    }
+                } else {
+                    // TODO: Handle error
                 }
-            } else {
-                // TODO: Handle error
-            }
-        })
+            })
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -142,9 +178,14 @@ class DocumentViewController: UIViewController {
             return
         }
         
+        let wasFirstResponder = textView.isFirstResponder
+        textView.resignFirstResponder()
         _ = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
             self.textView.frame = self.view.safeAreaLayoutGuide.layoutFrame
             self.webView.frame = self.textView.frame
+            if wasFirstResponder {
+                self.textView.becomeFirstResponder()
+            }
         }) // TODO: Anyway to to it without a timer?
     }
     

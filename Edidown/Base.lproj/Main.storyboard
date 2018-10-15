@@ -37,19 +37,17 @@
                     </view>
                     <navigationItem key="navigationItem" id="kbx-Vm-svg">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="XFt-ny-fBQ">
-                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="nnJ-tt-icn">
-                                <rect key="frame" x="20" y="7.6666666666666679" width="125" height="29.000000000000004"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <segments>
-                                    <segment title="Edit"/>
-                                    <segment title="Preview"/>
-                                </segments>
-                                <connections>
-                                    <action selector="changeMode:" destination="M2k-L8-Olo" eventType="valueChanged" id="dYo-59-5Fq"/>
-                                </connections>
-                            </segmentedControl>
-                        </barButtonItem>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="PMd-C9-Pfo">
+                            <rect key="frame" x="109" y="7.6666666666666679" width="196" height="29.000000000000004"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Edit"/>
+                                <segment title="Preview"/>
+                            </segments>
+                            <connections>
+                                <action selector="changeMode:" destination="M2k-L8-Olo" eventType="valueChanged" id="cmJ-cX-hZt"/>
+                            </connections>
+                        </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="Pgz-Dp-dvC">
                             <connections>
                                 <action selector="dismissDocumentViewController" destination="M2k-L8-Olo" id="k6Z-UG-XBW"/>
@@ -60,7 +58,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rl9-ES-qQn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1029.5999999999999" y="653.20197044334975"/>
+            <point key="canvasLocation" x="1028.985507246377" y="652.98913043478262"/>
         </scene>
         <!--Choose a template-->
         <scene sceneID="Spr-fe-kck">
