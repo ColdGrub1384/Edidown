@@ -204,7 +204,7 @@ class DocumentViewController: UIViewController {
                 self.document?.close(completionHandler: nil)
                 
                 if !success {
-                    // TODO: Handle error
+                    UIApplication.shared.keyWindow?.rootViewController?.presentMessage("An error occurred while saving '\(self.document!.fileURL.lastPathComponent)'", withTitle: "Error saving file!")
                 }
             })
         }
@@ -261,7 +261,7 @@ class DocumentViewController: UIViewController {
                     }
                     
                 } else {
-                    // TODO: Handle error
+                    self.presentMessage("An error occurred while reading file.", withTitle: "Error reading file!")
                 }
             })
         }
