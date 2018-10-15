@@ -32,7 +32,14 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
         didSet {
             templatesName = []
             templatesURL = []
+            if let blank = templates["Blank document"] { // Always put 'Blank document' at top
+                templatesName.append("Blank document")
+                templatesURL.append(blank)
+            }
             for file in templates {
+                guard file.key != "Blank document" else {
+                    continue
+                }
                 templatesName.append(file.key)
                 templatesURL.append(file.value)
             }
