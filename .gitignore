@@ -1,3 +1,4 @@
 .Ds_Store
 *.xcuserstate
-xcschememanagement.plist
+project.xcworkspace/
+xcuserdata/
