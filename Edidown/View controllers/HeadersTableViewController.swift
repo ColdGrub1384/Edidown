@@ -8,23 +8,27 @@
 
 import UIKit
 
+/// A View controller for indexing Markdown headers.
 class HeadersTableViewController: UITableViewController {
     
+    /// The ranges of headers.
     var headersRanges = [Range<String.Index>]()
     
+    /// The headers.
     var headers = [String]() {
         didSet {
             tableView.reloadData()
         }
     }
     
+    /// Code called when an header is selected.
     var selectionHandler: ((Range<String.Index>) -> Void)?
     
     @objc private func cancel() {
         dismiss(animated: true, completion: nil)
     }
     
-    func configureLabel(label: UILabel, forHeader header: String) {
+    private func configureLabel(label: UILabel, forHeader header: String) {
         var h = 0
         var hashes = ""
         var headerName = header
