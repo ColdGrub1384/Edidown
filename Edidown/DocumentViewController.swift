@@ -83,6 +83,15 @@ class DocumentViewController: UIViewController {
             return
         }
         
+        guard sender.tag == 1 else { // Auto save
+            document?.save(to: url, for: .forOverwriting, completionHandler: { _ in
+                sender.tag = 1
+                self.export(sender)
+            })
+            return
+        }
+        sender.tag = 0
+        
         func share(file: URL) {
             let controller = UIDocumentInteractionController(url: file)
             controller.presentOptionsMenu(from: sender, animated: true)
@@ -166,6 +175,7 @@ class DocumentViewController: UIViewController {
     @IBAction func changeMode(_ sender: UISegmentedControl) {
         webView.isHidden = (sender.selectedSegmentIndex == 0)
         textView.isHidden = !webView.isHidden
+        document?.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: nil)
         
         if pathExtension == "md" || pathExtension == "markdown" {
             do {
@@ -183,6 +193,7 @@ class DocumentViewController: UIViewController {
         
         guard !textView.isFirstResponder else {
             textView.resignFirstResponder()
+            document?.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: nil)
             return
         }
         
