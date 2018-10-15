@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */; };
 		C9EF7DEC217512190055DFDF /* String+ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DEB217512190055DFDF /* String+ranges.swift */; };
-		C9EF7DF0217518060055DFDF /* NSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DEF217518060055DFDF /* NSRange.swift */; };
+		C9EF7DF0217518060055DFDF /* NSRange+toTextRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DEF217518060055DFDF /* NSRange+toTextRange.swift */; };
 		C9EF7DF22175209B0055DFDF /* UIViewController+presentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DF12175209B0055DFDF /* UIViewController+presentError.swift */; };
 		C9F04E9A2173EDFA00BDD03E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F04E992173EDFA00BDD03E /* AppDelegate.swift */; };
 		C9F04E9C2173EDFA00BDD03E /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F04E9B2173EDFA00BDD03E /* DocumentBrowserViewController.swift */; };
@@ -91,7 +91,7 @@
 /* Begin PBXFileReference section */
 		C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersTableViewController.swift; sourceTree = "<group>"; };
 		C9EF7DEB217512190055DFDF /* String+ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ranges.swift"; sourceTree = "<group>"; };
-		C9EF7DEF217518060055DFDF /* NSRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRange.swift; sourceTree = "<group>"; };
+		C9EF7DEF217518060055DFDF /* NSRange+toTextRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRange+toTextRange.swift"; sourceTree = "<group>"; };
 		C9EF7DF12175209B0055DFDF /* UIViewController+presentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+presentError.swift"; sourceTree = "<group>"; };
 		C9F04E962173EDFA00BDD03E /* Edidown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Edidown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9F04E992173EDFA00BDD03E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -123,6 +123,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C987DCE6217531A700889300 /* View controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C9F04E9B2173EDFA00BDD03E /* DocumentBrowserViewController.swift */,
+				C9F04E9D2173EDFA00BDD03E /* DocumentViewController.swift */,
+				C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */,
+				C9F04F102174E92900BDD03E /* TemplateChooserViewController.swift */,
+			);
+			path = "View controllers";
+			sourceTree = "<group>";
+		};
+		C987DCE9217531C300889300 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C9EF7DEB217512190055DFDF /* String+ranges.swift */,
+				C9EF7DEF217518060055DFDF /* NSRange+toTextRange.swift */,
+				C9EF7DF12175209B0055DFDF /* UIViewController+presentError.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C987DCEA217531D700889300 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C9F04F0E2174E66800BDD03E /* body.html */,
+				C9F04EA12173EDFA00BDD03E /* Main.storyboard */,
+				C9F04EA42173EDFC00BDD03E /* Assets.xcassets */,
+				C9F04EA62173EDFC00BDD03E /* LaunchScreen.storyboard */,
+				C9F04EA92173EDFC00BDD03E /* Info.plist */,
+				C9F04F182174EAF900BDD03E /* Templates */,
+				C9F04F122174EAA900BDD03E /* Templates.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		C9F04E8D2173EDFA00BDD03E = {
 			isa = PBXGroup;
 			children = (
@@ -145,21 +180,10 @@
 			isa = PBXGroup;
 			children = (
 				C9F04E992173EDFA00BDD03E /* AppDelegate.swift */,
-				C9F04E9B2173EDFA00BDD03E /* DocumentBrowserViewController.swift */,
-				C9F04E9D2173EDFA00BDD03E /* DocumentViewController.swift */,
-				C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */,
-				C9F04F102174E92900BDD03E /* TemplateChooserViewController.swift */,
+				C987DCE6217531A700889300 /* View controllers */,
+				C987DCE9217531C300889300 /* Extensions */,
 				C9F04E9F2173EDFA00BDD03E /* Document.swift */,
-				C9EF7DEB217512190055DFDF /* String+ranges.swift */,
-				C9EF7DEF217518060055DFDF /* NSRange.swift */,
-				C9EF7DF12175209B0055DFDF /* UIViewController+presentError.swift */,
-				C9F04F0E2174E66800BDD03E /* body.html */,
-				C9F04EA12173EDFA00BDD03E /* Main.storyboard */,
-				C9F04EA42173EDFC00BDD03E /* Assets.xcassets */,
-				C9F04EA62173EDFC00BDD03E /* LaunchScreen.storyboard */,
-				C9F04EA92173EDFC00BDD03E /* Info.plist */,
-				C9F04F182174EAF900BDD03E /* Templates */,
-				C9F04F122174EAA900BDD03E /* Templates.plist */,
+				C987DCEA217531D700889300 /* Resources */,
 			);
 			path = Edidown;
 			sourceTree = "<group>";
@@ -307,7 +331,7 @@
 				C9F04E9E2173EDFA00BDD03E /* DocumentViewController.swift in Sources */,
 				C9F04E9C2173EDFA00BDD03E /* DocumentBrowserViewController.swift in Sources */,
 				C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */,
-				C9EF7DF0217518060055DFDF /* NSRange.swift in Sources */,
+				C9EF7DF0217518060055DFDF /* NSRange+toTextRange.swift in Sources */,
 				C9F04E9A2173EDFA00BDD03E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
