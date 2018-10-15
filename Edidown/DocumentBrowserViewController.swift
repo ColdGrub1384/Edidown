@@ -29,11 +29,13 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
         
-        if let url = Bundle.main.url(forResource: "Untitled", withExtension: "md") {
-            importHandler(url, .copy)
-        } else {
-            importHandler(nil, .none)
-        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let templateChooser = storyboard.instantiateViewController(withIdentifier: "TemplateChooserViewController") as! TemplateChooserViewController
+        templateChooser.importHandler = importHandler
+        let navVC = UINavigationController(rootViewController: templateChooser)
+        navVC.modalPresentationStyle = .formSheet
+        navVC.modalTransitionStyle = .crossDissolve
+        present(navVC, animated: true, completion: nil)
     }
     
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentsAt documentURLs: [URL]) {

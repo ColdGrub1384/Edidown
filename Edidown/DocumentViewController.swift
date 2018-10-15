@@ -39,6 +39,11 @@ class DocumentViewController: UIViewController {
     /// The document to edit.
     var document: Document?
     
+    /// The path extension of `document`.
+    var pathExtension: String? {
+        return document?.fileURL.pathExtension.lowercased()
+    }
+    
     /// Called to change between edit and preview mode.
     ///
     /// - Parameters:
@@ -46,12 +51,16 @@ class DocumentViewController: UIViewController {
     @IBAction func changeMode(_ sender: UISegmentedControl) {
         webView.isHidden = (sender.selectedSegmentIndex == 0)
         textView.isHidden = !webView.isHidden
-        do {
-            webView.loadHTMLString(DocumentViewController.htmlHead+(try Down(markdownString: textView.text).toHTML()), baseURL: nil)
-        } catch {
-            webView.loadHTMLString(DocumentViewController.htmlHead+error.localizedDescription, baseURL: nil)
-        }
         
+        if pathExtension == "md" || pathExtension == "markdown" {
+            do {
+                webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+(try Down(markdownString: textView.text).toHTML()), baseURL: nil)
+            } catch {
+                webView.loadHTMLString(DocumentViewController.htmlHead+error.localizedDescription, baseURL: nil)
+            }
+        } else if pathExtension == "html" || pathExtension == "htm" {
+            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+textView.text, baseURL: nil)
+        }
     }
     
     /// Dismisses keyboard or this View controller and save file.
@@ -79,7 +88,6 @@ class DocumentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        textStorage.language = "markdown"
         textStorage.highlightr.setTheme(to: "xcode")
         let layoutManager = NSLayoutManager()
         textStorage.addLayoutManager(layoutManager)
@@ -109,6 +117,11 @@ class DocumentViewController: UIViewController {
                 // Display the content of the document, e.g.:
                 self.title = self.document?.fileURL.lastPathComponent
                 self.textView.text = self.document?.text
+                if self.pathExtension == "md" || self.pathExtension == "markdown" {
+                    self.textStorage.language = "markdown"
+                } else if self.pathExtension == "html" || self.pathExtension == "htm" {
+                    self.textStorage.language = "xml"
+                }
             } else {
                 // TODO: Handle error
             }

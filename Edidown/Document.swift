@@ -14,10 +14,10 @@ enum DocumentError: Error {
     case unableToEncodeText
 }
 
-/// A document representing a Markdown file.
+/// A document representing a Markdown or HTML file.
 class Document: UIDocument {
     
-    /// The text of the Markdown file to save.
+    /// The text of the Markdown or HTML file to save.
     var text = ""
     
     override func contents(forType typeName: String) throws -> Any {
