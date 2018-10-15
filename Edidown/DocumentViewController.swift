@@ -177,6 +177,10 @@ class DocumentViewController: UIViewController {
         textView.isHidden = !webView.isHidden
         document?.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: nil)
         
+        if textView.isHidden {
+            textView.resignFirstResponder()
+        }
+        
         if pathExtension == "md" || pathExtension == "markdown" {
             do {
                 webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+(try Down(markdownString: textView.text).toHTML()), baseURL: nil)
