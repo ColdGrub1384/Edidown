@@ -24,25 +24,10 @@ class HeadersTableViewController: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    // MARK: - Table view controller
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return headers.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        
+    func configureLabel(label: UILabel, forHeader header: String) {
         var h = 0
         var hashes = ""
-        var headerName = headers[indexPath.row]
+        var headerName = header
         while headerName.hasPrefix("#") {
             h += 1
             hashes += "#"
@@ -66,10 +51,41 @@ class HeadersTableViewController: UITableViewController {
         let attributedString = NSMutableAttributedString(string: hashes, attributes: [.foregroundColor : UIColor.lightGray, .font : font])
         attributedString.append(NSAttributedString(string: headerName, attributes: [.font : font]))
         
-        cell.textLabel?.text = headers[indexPath.row]
-        cell.textLabel?.attributedText = attributedString
+        label.numberOfLines = 0
+        label.text = header
+        label.attributedText = attributedString
+    }
+    
+    // MARK: - Table view controller
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return headers.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        
+        if let label = cell.textLabel {
+            configureLabel(label: label, forHeader: headers[indexPath.row])
+        }
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let label = UILabel()
+        configureLabel(label: label, forHeader: headers[indexPath.row])
+        guard label.frame.height != 0 else {
+            return tableView.rowHeight
+        }
+        return label.frame.height
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
