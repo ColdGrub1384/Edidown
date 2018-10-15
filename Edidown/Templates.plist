@@ -6,11 +6,23 @@
 	<dict>
 		<key>Blank document</key>
 		<string>Blank/Untitled.html</string>
+		<key>Ordered list</key>
+		<string>Ordered list/Untitled.html</string>
+		<key>Unordered list</key>
+		<string>Unordered list/Untitled.html</string>
+		<key>Table</key>
+		<string>Table/Untitled.html</string>
 	</dict>
 	<key>Markdown</key>
 	<dict>
 		<key>Blank document</key>
 		<string>Blank/Untitled.md</string>
+		<key>Ordered list</key>
+		<string>Ordered list/Untitled.md</string>
+		<key>Unordered list</key>
+		<string>Unordered list/Untitled.md</string>
+		<key>Todo list</key>
+		<string>Todo list/Untitled.md</string>
 	</dict>
 </dict>
 </plist>

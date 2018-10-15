@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C987DCEC2175363E00889300 /* ParseMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = C987DCEB2175363E00889300 /* ParseMarkdown.swift */; };
 		C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */; };
 		C9EF7DEC217512190055DFDF /* String+ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DEB217512190055DFDF /* String+ranges.swift */; };
 		C9EF7DF0217518060055DFDF /* NSRange+toTextRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DEF217518060055DFDF /* NSRange+toTextRange.swift */; };
@@ -89,6 +90,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C987DCEB2175363E00889300 /* ParseMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseMarkdown.swift; sourceTree = "<group>"; };
 		C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersTableViewController.swift; sourceTree = "<group>"; };
 		C9EF7DEB217512190055DFDF /* String+ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ranges.swift"; sourceTree = "<group>"; };
 		C9EF7DEF217518060055DFDF /* NSRange+toTextRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRange+toTextRange.swift"; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 				C987DCE6217531A700889300 /* View controllers */,
 				C987DCE9217531C300889300 /* Extensions */,
 				C9F04E9F2173EDFA00BDD03E /* Document.swift */,
+				C987DCEB2175363E00889300 /* ParseMarkdown.swift */,
 				C987DCEA217531D700889300 /* Resources */,
 			);
 			path = Edidown;
@@ -328,6 +331,7 @@
 				C9EF7DF22175209B0055DFDF /* UIViewController+presentError.swift in Sources */,
 				C9F04F112174E92900BDD03E /* TemplateChooserViewController.swift in Sources */,
 				C9EF7DEC217512190055DFDF /* String+ranges.swift in Sources */,
+				C987DCEC2175363E00889300 /* ParseMarkdown.swift in Sources */,
 				C9F04E9E2173EDFA00BDD03E /* DocumentViewController.swift in Sources */,
 				C9F04E9C2173EDFA00BDD03E /* DocumentBrowserViewController.swift in Sources */,
 				C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */,
