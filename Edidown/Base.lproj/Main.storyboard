@@ -125,7 +125,7 @@
                         <viewLayoutGuide key="safeArea" id="rJE-zQ-OH2"/>
                     </view>
                     <navigationItem key="navigationItem" title="Choose a template" id="KMb-7s-GXQ">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="cancel" id="Usj-qf-Iur">
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="Usj-qf-Iur">
                             <connections>
                                 <action selector="cancel:" destination="rBC-MX-QzO" id="Lvr-Ub-bE6"/>
                             </connections>

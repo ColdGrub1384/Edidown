@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C987DCEC2175363E00889300 /* ParseMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = C987DCEB2175363E00889300 /* ParseMarkdown.swift */; };
+		C9C552C32175621B00F43B34 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9C552C22175621B00F43B34 /* Settings.bundle */; };
 		C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */; };
 		C9EF7DEC217512190055DFDF /* String+ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DEB217512190055DFDF /* String+ranges.swift */; };
 		C9EF7DF0217518060055DFDF /* NSRange+toTextRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DEF217518060055DFDF /* NSRange+toTextRange.swift */; };
@@ -91,6 +92,7 @@
 
 /* Begin PBXFileReference section */
 		C987DCEB2175363E00889300 /* ParseMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseMarkdown.swift; sourceTree = "<group>"; };
+		C9C552C22175621B00F43B34 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersTableViewController.swift; sourceTree = "<group>"; };
 		C9EF7DEB217512190055DFDF /* String+ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ranges.swift"; sourceTree = "<group>"; };
 		C9EF7DEF217518060055DFDF /* NSRange+toTextRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRange+toTextRange.swift"; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 		C9F04E8D2173EDFA00BDD03E = {
 			isa = PBXGroup;
 			children = (
+				C9C552C22175621B00F43B34 /* Settings.bundle */,
 				C9F04F012174E17F00BDD03E /* Highlightr.xcodeproj */,
 				C9F04EB12173F43600BDD03E /* Down.xcodeproj */,
 				C9F04E982173EDFA00BDD03E /* Edidown */,
@@ -220,6 +223,7 @@
 				C9F04E932173EDFA00BDD03E /* Frameworks */,
 				C9F04E942173EDFA00BDD03E /* Resources */,
 				C9F04ECB2173F8D100BDD03E /* Embed Frameworks */,
+				C9C552BF217561AC00F43B34 /* Copy licenses */,
 			);
 			buildRules = (
 			);
@@ -317,10 +321,32 @@
 				C9F04F132174EAA900BDD03E /* Templates.plist in Resources */,
 				C9F04EA52173EDFC00BDD03E /* Assets.xcassets in Resources */,
 				C9F04EA32173EDFA00BDD03E /* Main.storyboard in Resources */,
+				C9C552C32175621B00F43B34 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C9C552BF217561AC00F43B34 /* Copy licenses */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy licenses";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "python credits/credits.py -s \"$SRCROOT\" -o \"$SRCROOT/Settings.bundle/Credits.plist\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C9F04E922173EDFA00BDD03E /* Sources */ = {
