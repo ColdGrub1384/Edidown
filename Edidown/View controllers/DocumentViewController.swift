@@ -66,7 +66,7 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
         
         let vc = JSHeadersTableViewController()
         webView.evaluateJavaScript("getHeadersIndexes()") { (indexes, error) in
-            if let indexes = indexes as? Int {
+            if let indexes = indexes as? Int, indexes >= 0 {
                 for i in 0...indexes {
                     vc.headersIndex.append(i)
                 }
