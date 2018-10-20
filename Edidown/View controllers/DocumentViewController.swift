@@ -51,6 +51,9 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     /// The Web view containing the preview.
     var webView: WKWebView!
     
+    /// The navigation corresponding to the latest preview.
+    var previewNavigation: WKNavigation?
+    
     /// The document to edit. This document should already be open. Should not be nil!
     var document: Document! {
         didSet {
@@ -204,11 +207,24 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     
     /// Loads preview for file.
     func loadPreview() {
-        let docs = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0]
+        
+        var code = ""
+        
         if pathExtension == "md" || pathExtension == "markdown" {
-            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+ParseMarkdown(textView.text), baseURL: docs)
+           code = DocumentViewController.htmlHead+"\n"+ParseMarkdown(textView.text)
         } else if pathExtension == "html" || pathExtension == "htm" {
-            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+textView.text, baseURL: docs)
+            code = DocumentViewController.htmlHead+"\n"+textView.text
+        }
+        
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0]
+        
+        // Don't use `WKWebView.loadHTMLString(_:baseURL:)` because of permission problems
+        let newFileURL = docs.appendingPathComponent(UUID().uuidString).appendingPathExtension("html")
+        
+        if let data = code.data(using: .utf8), FileManager.default.createFile(atPath: newFileURL.path, contents: data, attributes: nil) {
+            previewNavigation = webView.loadFileURL(newFileURL, allowingReadAccessTo: docs)
+        } else {
+            presentMessage("An error occurred while loading preview.", withTitle: "Error loading preview!")
         }
     }
     
@@ -333,6 +349,9 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        if let url = webView.url, navigation == previewNavigation {
+            try? FileManager.default.removeItem(at: url)
+        }
         if shouldShowHeadersOnWebViewDidLoad {
             shouldShowHeadersOnWebViewDidLoad = false
             showHeaders(showHeadersBarButtonItem)
@@ -354,6 +373,7 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
             }
             
             let newURL = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0].appendingPathComponent(url.lastPathComponent)
+            let encodedName = url.lastPathComponent.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? url.lastPathComponent
             
             do {
                 if FileManager.default.fileExists(atPath: newURL.path) {
@@ -361,7 +381,11 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                 }
                 try FileManager.default.copyItem(at: url, to: newURL)
                 
-                self.textView.text = "[\(url.lastPathComponent)]: \(newURL.absoluteString)\n"+self.textView.text
+                if self.pathExtension == "md" || self.pathExtension == "markdown" {
+                    self.textView.insertText("\n![Image](\(encodedName))")
+                } else if self.pathExtension == "html" || self.pathExtension == "htm" {
+                    self.textView.insertText("\n<img src='\(encodedName)'>")
+                }
                 self.segmentedControl.selectedSegmentIndex = 0
                 self.changeMode(self.segmentedControl)
             } catch {
