@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C9030B2521794549001BDD69 /* JSHeadersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9030B2421794549001BDD69 /* JSHeadersTableViewController.swift */; };
 		C987DCEC2175363E00889300 /* ParseMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = C987DCEB2175363E00889300 /* ParseMarkdown.swift */; };
 		C9C552C32175621B00F43B34 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9C552C22175621B00F43B34 /* Settings.bundle */; };
 		C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */; };
@@ -91,6 +92,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C9030B2421794549001BDD69 /* JSHeadersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSHeadersTableViewController.swift; sourceTree = "<group>"; };
 		C987DCEB2175363E00889300 /* ParseMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseMarkdown.swift; sourceTree = "<group>"; };
 		C9C552C22175621B00F43B34 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersTableViewController.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				C9F04E9B2173EDFA00BDD03E /* DocumentBrowserViewController.swift */,
 				C9F04E9D2173EDFA00BDD03E /* DocumentViewController.swift */,
 				C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */,
+				C9030B2421794549001BDD69 /* JSHeadersTableViewController.swift */,
 				C9F04F102174E92900BDD03E /* TemplateChooserViewController.swift */,
 			);
 			path = "View controllers";
@@ -362,6 +365,7 @@
 				C9F04E9C2173EDFA00BDD03E /* DocumentBrowserViewController.swift in Sources */,
 				C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */,
 				C9EF7DF0217518060055DFDF /* NSRange+toTextRange.swift in Sources */,
+				C9030B2521794549001BDD69 /* JSHeadersTableViewController.swift in Sources */,
 				C9F04E9A2173EDFA00BDD03E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

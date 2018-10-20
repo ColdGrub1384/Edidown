@@ -17,3 +17,48 @@
         word-wrap: break-word
     }
 </style>
+
+<script>
+
+    function headers() {
+        return document.querySelectorAll("h1, h2, h3, h4, h5, h6")
+    }
+    
+    function getHeadersIndexes() {
+        return headers().length-1
+    }
+
+    function getHeaders() {
+        var headersTitles = []
+    
+        headers().forEach(function (item) {
+            var hashes
+            switch(item.tagName) {
+                case "H1":
+                    hashes = "# "
+                    break
+                case "H2":
+                    hashes = "## "
+                    break
+                case "H3":
+                    hashes = "### "
+                    break
+                case "H4":
+                    hashes = "#### "
+                    break
+                case "H5":
+                    hashes = "##### "
+                    break
+                case "H6":
+                    hashes = "###### "
+                    break
+                default:
+                    break
+            }
+            headersTitles.push(hashes+item.innerText)
+        })
+                      
+        return headersTitles
+    }
+    
+</script>

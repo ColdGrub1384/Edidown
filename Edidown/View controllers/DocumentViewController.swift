@@ -12,10 +12,15 @@ import Down
 import Highlightr
 
 /// The View controller for editing a Markdown file.
-class DocumentViewController: UIViewController {
+class DocumentViewController: UIViewController, WKNavigationDelegate {
     
     /// The segmented control for switching between edition and preview.
     @IBOutlet weak var segmentedControl: UISegmentedControl!
+    
+    /// The bar button item for showing headers.
+    var showHeadersBarButtonItem: UIBarButtonItem!
+    
+    private var shouldShowHeadersOnWebViewDidLoad = false
     
     /// HTML code to be shown before the markdown or HTMl content. Put styles and metas.
     static var htmlHead: String {
@@ -52,25 +57,28 @@ class DocumentViewController: UIViewController {
     
     /// Shows headers of markdown file.
     @objc func showHeaders(_ sender: UIBarButtonItem) {
+        guard !webView.isHidden else {
+            shouldShowHeadersOnWebViewDidLoad = true
+            segmentedControl.selectedSegmentIndex = 1
+            changeMode(segmentedControl)
+            return
+        }
         
-        let vc = HeadersTableViewController()
-        var headers = [String]()
-        var indexes = [String:Int]()
-        for line in textView.text.components(separatedBy: .newlines) {
-            if line.hasPrefix("#") {
-                headers.append(line)
-                if indexes[line] == nil {
-                    indexes[line] = 0
-                } else {
-                    indexes[line] = indexes[line]!+1
+        let vc = JSHeadersTableViewController()
+        webView.evaluateJavaScript("getHeadersIndexes()") { (indexes, error) in
+            if let indexes = indexes as? Int {
+                for i in 0...indexes {
+                    vc.headersIndex.append(i)
                 }
-                vc.headersRanges.append(textView.text.ranges(of: line)[indexes[line]!])
             }
         }
-        vc.headers = headers
-        vc.selectionHandler = { range in
-            self.textView.becomeFirstResponder()
-            self.textView.selectedRange = NSRange(range, in: self.textView.text)
+        webView.evaluateJavaScript("getHeaders()") { (headers, error) in
+            if let headers = headers as? [String] {
+                vc.headers = headers
+            }
+        }
+        vc.selectionHandler = { index in
+            self.webView.evaluateJavaScript("headers()[\(index)].scrollIntoView()", completionHandler: nil)
         }
         
         let navVC = UINavigationController(rootViewController: vc)
@@ -230,7 +238,7 @@ class DocumentViewController: UIViewController {
         view.addSubview(textView)
         
         webView = WKWebView(frame: .zero)
-        webView.configuration.preferences.javaScriptEnabled = false
+        webView.navigationDelegate = self
         webView.isHidden = true
         view.addSubview(webView)
         
@@ -248,13 +256,12 @@ class DocumentViewController: UIViewController {
                 if success {
                     self.title = self.document?.fileURL.lastPathComponent
                     self.textView.text = self.document?.text
-                    
-                    self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(self.export(_:)))
+                    self.showHeadersBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.showHeaders(_:)))
+                    self.navigationItem.leftBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(self.export(_:))), self.showHeadersBarButtonItem]
                     
                     if self.pathExtension == "md" || self.pathExtension == "markdown" {
                         self.segmentedControl.isHidden = false
                         self.textStorage.language = "markdown"
-                        self.navigationItem.leftBarButtonItems?.append(UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.showHeaders(_:))))
                     } else if self.pathExtension == "html" || self.pathExtension == "htm" {
                         self.segmentedControl.isHidden = false
                         self.textStorage.language = "xml"
@@ -308,5 +315,14 @@ class DocumentViewController: UIViewController {
     @objc func keyboardWillHide(_ notification:Notification) {
         textView.contentInset = .zero
         textView.scrollIndicatorInsets = .zero
+    }
+    
+    // MARK: - Web kit navigation delegate
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        if shouldShowHeadersOnWebViewDidLoad {
+            shouldShowHeadersOnWebViewDidLoad = false
+            showHeaders(showHeadersBarButtonItem)
+        }
     }
 }

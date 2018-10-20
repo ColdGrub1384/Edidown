@@ -1,19 +1,18 @@
 //
-//  HeadersTableViewController.swift
+//  JSHeadersTableViewController.swift
 //  Edidown
 //
-//  Created by Adrian Labbe on 10/15/18.
+//  Created by Adrian Labbe on 10/18/18.
 //  Copyright © 2018 Adrian Labbe. All rights reserved.
 //
 
 import UIKit
 
-/// A View controller for indexing Markdown headers.
-@available(*, deprecated, message: "Use `JSHeadersTableViewController`")
-class HeadersTableViewController: UITableViewController {
+/// A View controller for indexing Markdown headers in a web view.
+class JSHeadersTableViewController: UITableViewController {
     
-    /// The ranges of headers.
-    var headersRanges = [Range<String.Index>]()
+    /// The index of headers.
+    var headersIndex = [Int]()
     
     /// The headers.
     var headers = [String]() {
@@ -23,7 +22,7 @@ class HeadersTableViewController: UITableViewController {
     }
     
     /// Code called when an header is selected.
-    var selectionHandler: ((Range<String.Index>) -> Void)?
+    var selectionHandler: ((Int) -> Void)?
     
     @objc private func cancel() {
         dismiss(animated: true, completion: nil)
@@ -95,7 +94,7 @@ class HeadersTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismiss(animated: true) {
-            self.selectionHandler?(self.headersRanges[indexPath.row])
+            self.selectionHandler?(self.headersIndex[indexPath.row])
         }
     }
 }
