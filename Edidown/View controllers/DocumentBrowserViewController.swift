@@ -70,7 +70,10 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         let vc = UINavigationController(rootViewController: documentViewController)
         vc.transitioningDelegate = self
         if #available(iOS 12.0, *) {
+            vc.modalPresentationStyle = .custom
+            documentViewController.loadViewIfNeeded()
             transitionController = transitionController(forDocumentAt: documentURL)
+            transitionController?.targetView = documentViewController.view
         }
         
         present(vc, animated: true, completion: nil)
