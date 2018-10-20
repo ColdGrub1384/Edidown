@@ -10,6 +10,7 @@ import UIKit
 import WebKit
 import Down
 import Highlightr
+import SafariServices
 
 /// The View controller for editing a Markdown file.
 class DocumentViewController: UIViewController, WKNavigationDelegate {
@@ -191,6 +192,15 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
         }
     }
     
+    /// Loads preview for file.
+    func loadPreview() {
+        if pathExtension == "md" || pathExtension == "markdown" {
+            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+ParseMarkdown(textView.text), baseURL: nil)
+        } else if pathExtension == "html" || pathExtension == "htm" {
+            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+textView.text, baseURL: nil)
+        }
+    }
+    
     /// Called to change between edit and preview mode.
     ///
     /// - Parameters:
@@ -204,11 +214,7 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
             textView.resignFirstResponder()
         }
         
-        if pathExtension == "md" || pathExtension == "markdown" {
-            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+ParseMarkdown(textView.text), baseURL: nil)
-        } else if pathExtension == "html" || pathExtension == "htm" {
-            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+textView.text, baseURL: nil)
-        }
+        loadPreview()
     }
     
     /// Dismisses keyboard or this View controller and save file.
@@ -304,6 +310,16 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
     }
     
     // MARK: - Web kit navigation delegate
+    
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        if let url = webView.url, url.scheme?.lowercased() == "http" || url.scheme?.lowercased() == "https" {
+            webView.stopLoading()
+            if webView.canGoBack {
+                webView.goBack()
+            }
+            present(SFSafariViewController(url: url), animated: true, completion: nil)
+        }
+    }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if shouldShowHeadersOnWebViewDidLoad {
