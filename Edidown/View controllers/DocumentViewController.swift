@@ -11,9 +11,10 @@ import WebKit
 import Down
 import Highlightr
 import SafariServices
+import MobileCoreServices
 
 /// The View controller for editing a Markdown file.
-class DocumentViewController: UIViewController, WKNavigationDelegate {
+class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     /// Returns a newly initialized instance from Storyboard.
     static func makeViewController() -> DocumentViewController {
@@ -70,6 +71,15 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
     /// The path extension of `document`.
     var pathExtension: String {
         return document.fileURL.pathExtension.lowercased()
+    }
+    
+    /// Picks an image for embedding it.
+    @IBAction func pickImage(_ sender: Any) {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.mediaTypes = [kUTTypeImage as String]
+        picker.delegate = self
+        present(picker, animated: true, completion: nil)
     }
     
     /// Shows headers of markdown file.
@@ -194,10 +204,11 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
     
     /// Loads preview for file.
     func loadPreview() {
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0]
         if pathExtension == "md" || pathExtension == "markdown" {
-            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+ParseMarkdown(textView.text), baseURL: nil)
+            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+ParseMarkdown(textView.text), baseURL: docs)
         } else if pathExtension == "html" || pathExtension == "htm" {
-            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+textView.text, baseURL: nil)
+            webView.loadHTMLString(DocumentViewController.htmlHead+"\n"+textView.text, baseURL: docs)
         }
     }
     
@@ -325,6 +336,37 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
         if shouldShowHeadersOnWebViewDidLoad {
             shouldShowHeadersOnWebViewDidLoad = false
             showHeaders(showHeadersBarButtonItem)
+        }
+    }
+    
+    // MARK: - Image picker controleller delegate
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        dismiss(animated: true) {
+            guard let url = info[.imageURL] as? URL else {
+                self.presentMessage("An error occurred while importing image", withTitle: "Error importing image!")
+                return
+            }
+            
+            let newURL = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0].appendingPathComponent(url.lastPathComponent)
+            
+            do {
+                if FileManager.default.fileExists(atPath: newURL.path) {
+                    try FileManager.default.removeItem(at: newURL)
+                }
+                try FileManager.default.copyItem(at: url, to: newURL)
+                
+                self.textView.text = "[\(url.lastPathComponent)]: \(newURL.absoluteString)\n"+self.textView.text
+                self.segmentedControl.selectedSegmentIndex = 0
+                self.changeMode(self.segmentedControl)
+            } catch {
+                self.presentError(error, withTitle: "Error importing image!")
+            }
         }
     }
 }
