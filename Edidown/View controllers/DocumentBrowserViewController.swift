@@ -7,12 +7,18 @@
 //
 
 import UIKit
+import SafariServices
 
 /// The main document browser.
 class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate, UIViewControllerTransitioningDelegate {
     
     /// Transition controller for presenting and dismissing View controllers.
     var transitionController: UIDocumentBrowserTransitionController?
+    
+    /// Shows the local web server in Safari.
+    @objc func showLocalWebServer() {
+        present(SFSafariViewController(url: WebServerManager.shared.serverURL ?? URL(string: "http://localhost")!), animated: true, completion: nil)
+    }
     
     // MARK: - Document browser view controller
     
@@ -23,6 +29,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         
         allowsDocumentCreation = true
         allowsPickingMultipleItems = false
+        additionalTrailingNavigationBarButtonItems = [UIBarButtonItem(image: UIImage(named: "www"), style: .plain, target: self, action: #selector(showLocalWebServer))]
     }
     
     // MARK: Document browser view controller delegate

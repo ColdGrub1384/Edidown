@@ -7,18 +7,37 @@
 //
 
 import UIKit
+import UserNotifications
+import GCDWebServers
+import Down
 
 /// The app's delegate.
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         
         window?.tintColor = UIColor(named: "TintColor")
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { (_, _) in }
+        
+        // Web server
+        
+        application.beginBackgroundTask {
+            print("Background task expired!")
+        }
+        let wwwDirectory = WebServerManager.shared.wwwDirectory
+        do {
+            if (try FileManager.default.contentsOfDirectory(at: wwwDirectory, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)) == [], let indexURL = Bundle.main.url(forResource: "index", withExtension: "md") {
+                try FileManager.default.copyItem(at: indexURL, to: wwwDirectory.appendingPathComponent(indexURL.lastPathComponent))
+            }
+        } catch {
+            NSLog("%@", error.localizedDescription)
+        }
+        
+        WebServerManager.shared.startServer()
         
         return true
     }

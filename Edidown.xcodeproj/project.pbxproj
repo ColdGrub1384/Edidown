@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		C9030B2521794549001BDD69 /* JSHeadersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9030B2421794549001BDD69 /* JSHeadersTableViewController.swift */; };
+		C9030B84217BA6C8001BDD69 /* GCDWebServers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9030B7F217BA6B7001BDD69 /* GCDWebServers.framework */; };
+		C9030B85217BA6C8001BDD69 /* GCDWebServers.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9030B7F217BA6B7001BDD69 /* GCDWebServers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C9030B89217BB5FC001BDD69 /* index.md in Resources */ = {isa = PBXBuildFile; fileRef = C9030B88217BA715001BDD69 /* index.md */; };
+		C9030B8B217BC34E001BDD69 /* WebServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9030B8A217BC34E001BDD69 /* WebServerManager.swift */; };
 		C987DCEC2175363E00889300 /* ParseMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = C987DCEB2175363E00889300 /* ParseMarkdown.swift */; };
 		C9C552C32175621B00F43B34 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9C552C22175621B00F43B34 /* Settings.bundle */; };
 		C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */; };
@@ -32,6 +36,62 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C9030B76217BA6B7001BDD69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DD76FB20486AB0100D96B5E;
+			remoteInfo = "GCDWebServer (Mac)";
+		};
+		C9030B78217BA6B7001BDD69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2DDD1F61BE69EE4002CE867;
+			remoteInfo = "GCDWebServer (iOS)";
+		};
+		C9030B7A217BA6B7001BDD69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2DDD1C71BE698A8002CE867;
+			remoteInfo = "GCDWebServer (tvOS)";
+		};
+		C9030B7C217BA6B7001BDD69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CEE28CD11AE004D800F4023C;
+			remoteInfo = "GCDWebServers (Mac)";
+		};
+		C9030B7E217BA6B7001BDD69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CEE28CEF1AE0051F00F4023C;
+			remoteInfo = "GCDWebServers (iOS)";
+		};
+		C9030B80217BA6B7001BDD69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2DDD18B1BE69404002CE867;
+			remoteInfo = "GCDWebServers (tvOS)";
+		};
+		C9030B82217BA6B7001BDD69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E24039251BA09207000B7089;
+			remoteInfo = "Tests (Mac)";
+		};
+		C9030B86217BA6C8001BDD69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CEE28CEE1AE0051F00F4023C;
+			remoteInfo = "GCDWebServers (iOS)";
+		};
 		C9F04EB62173F43600BDD03E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C9F04EB12173F43600BDD03E /* Down.xcodeproj */;
@@ -83,6 +143,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				C9030B85217BA6C8001BDD69 /* GCDWebServers.framework in Embed Frameworks */,
 				C9F04F0B2174E18C00BDD03E /* Highlightr.framework in Embed Frameworks */,
 				C9F04ED12173F8E500BDD03E /* Down.framework in Embed Frameworks */,
 			);
@@ -93,6 +154,9 @@
 
 /* Begin PBXFileReference section */
 		C9030B2421794549001BDD69 /* JSHeadersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSHeadersTableViewController.swift; sourceTree = "<group>"; };
+		C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GCDWebServer.xcodeproj; path = GCDWebServer/GCDWebServer.xcodeproj; sourceTree = "<group>"; };
+		C9030B88217BA715001BDD69 /* index.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = index.md; sourceTree = "<group>"; };
+		C9030B8A217BC34E001BDD69 /* WebServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServerManager.swift; sourceTree = "<group>"; };
 		C987DCEB2175363E00889300 /* ParseMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseMarkdown.swift; sourceTree = "<group>"; };
 		C9C552C22175621B00F43B34 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersTableViewController.swift; sourceTree = "<group>"; };
@@ -121,6 +185,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9030B84217BA6C8001BDD69 /* GCDWebServers.framework in Frameworks */,
 				C9F04F0A2174E18C00BDD03E /* Highlightr.framework in Frameworks */,
 				C9F04ED02173F8E500BDD03E /* Down.framework in Frameworks */,
 			);
@@ -129,6 +194,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C9030B6C217BA6B6001BDD69 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C9030B77217BA6B7001BDD69 /* GCDWebServer */,
+				C9030B79217BA6B7001BDD69 /* GCDWebServer.app */,
+				C9030B7B217BA6B7001BDD69 /* GCDWebServer.app */,
+				C9030B7D217BA6B7001BDD69 /* GCDWebServers.framework */,
+				C9030B7F217BA6B7001BDD69 /* GCDWebServers.framework */,
+				C9030B81217BA6B7001BDD69 /* GCDWebServers.framework */,
+				C9030B83217BA6B7001BDD69 /* Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C987DCE6217531A700889300 /* View controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +234,7 @@
 			isa = PBXGroup;
 			children = (
 				C9F04F0E2174E66800BDD03E /* body.html */,
+				C9030B88217BA715001BDD69 /* index.md */,
 				C9F04EA12173EDFA00BDD03E /* Main.storyboard */,
 				C9F04EA42173EDFC00BDD03E /* Assets.xcassets */,
 				C9F04EA62173EDFC00BDD03E /* LaunchScreen.storyboard */,
@@ -169,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				C9C552C22175621B00F43B34 /* Settings.bundle */,
+				C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */,
 				C9F04F012174E17F00BDD03E /* Highlightr.xcodeproj */,
 				C9F04EB12173F43600BDD03E /* Down.xcodeproj */,
 				C9F04E982173EDFA00BDD03E /* Edidown */,
@@ -192,6 +273,7 @@
 				C987DCE9217531C300889300 /* Extensions */,
 				C9F04E9F2173EDFA00BDD03E /* Document.swift */,
 				C987DCEB2175363E00889300 /* ParseMarkdown.swift */,
+				C9030B8A217BC34E001BDD69 /* WebServerManager.swift */,
 				C987DCEA217531D700889300 /* Resources */,
 			);
 			path = Edidown;
@@ -233,6 +315,7 @@
 			dependencies = (
 				C9F04ED32173F8E500BDD03E /* PBXTargetDependency */,
 				C9F04F0D2174E18C00BDD03E /* PBXTargetDependency */,
+				C9030B87217BA6C8001BDD69 /* PBXTargetDependency */,
 			);
 			name = Edidown;
 			productName = Edidown;
@@ -251,6 +334,11 @@
 				TargetAttributes = {
 					C9F04E952173EDFA00BDD03E = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -271,6 +359,10 @@
 					ProjectRef = C9F04EB12173F43600BDD03E /* Down.xcodeproj */;
 				},
 				{
+					ProductGroup = C9030B6C217BA6B6001BDD69 /* Products */;
+					ProjectRef = C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */;
+				},
+				{
 					ProductGroup = C9F04F022174E17F00BDD03E /* Products */;
 					ProjectRef = C9F04F012174E17F00BDD03E /* Highlightr.xcodeproj */;
 				},
@@ -283,6 +375,55 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		C9030B77217BA6B7001BDD69 /* GCDWebServer */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = GCDWebServer;
+			remoteRef = C9030B76217BA6B7001BDD69 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9030B79217BA6B7001BDD69 /* GCDWebServer.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = GCDWebServer.app;
+			remoteRef = C9030B78217BA6B7001BDD69 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9030B7B217BA6B7001BDD69 /* GCDWebServer.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = GCDWebServer.app;
+			remoteRef = C9030B7A217BA6B7001BDD69 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9030B7D217BA6B7001BDD69 /* GCDWebServers.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GCDWebServers.framework;
+			remoteRef = C9030B7C217BA6B7001BDD69 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9030B7F217BA6B7001BDD69 /* GCDWebServers.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GCDWebServers.framework;
+			remoteRef = C9030B7E217BA6B7001BDD69 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9030B81217BA6B7001BDD69 /* GCDWebServers.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GCDWebServers.framework;
+			remoteRef = C9030B80217BA6B7001BDD69 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9030B83217BA6B7001BDD69 /* Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Tests.xctest;
+			remoteRef = C9030B82217BA6B7001BDD69 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C9F04EB72173F43600BDD03E /* Down.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -325,6 +466,7 @@
 				C9F04EA52173EDFC00BDD03E /* Assets.xcassets in Resources */,
 				C9F04EA32173EDFA00BDD03E /* Main.storyboard in Resources */,
 				C9C552C32175621B00F43B34 /* Settings.bundle in Resources */,
+				C9030B89217BB5FC001BDD69 /* index.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,12 +509,18 @@
 				C9EF7DF0217518060055DFDF /* NSRange+toTextRange.swift in Sources */,
 				C9030B2521794549001BDD69 /* JSHeadersTableViewController.swift in Sources */,
 				C9F04E9A2173EDFA00BDD03E /* AppDelegate.swift in Sources */,
+				C9030B8B217BC34E001BDD69 /* WebServerManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C9030B87217BA6C8001BDD69 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "GCDWebServers (iOS)";
+			targetProxy = C9030B86217BA6C8001BDD69 /* PBXContainerItemProxy */;
+		};
 		C9F04ED32173F8E500BDD03E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Down;

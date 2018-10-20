@@ -4,3 +4,6 @@
 [submodule "Highlightr"]
 	path = Highlightr
 	url = https://github.com/raspu/Highlightr.git
+[submodule "GCDWebServer"]
+	path = GCDWebServer
+	url = https://github.com/swisspol/GCDWebServer.git
