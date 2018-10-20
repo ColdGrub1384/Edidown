@@ -63,9 +63,9 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     ///     - documentURL: The URL to present.
     func presentDocument(at documentURL: URL) {
         
-        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        let documentViewController = storyBoard.instantiateViewController(withIdentifier: "DocumentViewController") as! DocumentViewController
-        documentViewController.document = Document(fileURL: documentURL)
+        let documentViewController = DocumentViewController.makeViewController()
+        
+        let doc = Document(fileURL: documentURL)
         
         let vc = UINavigationController(rootViewController: documentViewController)
         vc.transitioningDelegate = self
@@ -73,10 +73,17 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
             vc.modalPresentationStyle = .custom
             documentViewController.loadViewIfNeeded()
             transitionController = transitionController(forDocumentAt: documentURL)
-            transitionController?.targetView = documentViewController.view
+            transitionController?.loadingProgress = doc.progress
+            transitionController?.targetView = documentViewController.textView
         }
-        
-        present(vc, animated: true, completion: nil)
+        doc.open(completionHandler: { (success) in
+            if success {
+                documentViewController.document = doc
+                self.present(vc, animated: true, completion: nil)
+            } else {
+                self.presentMessage("An error occurred while reading file.", withTitle: "Error reading file!")
+            }
+        })
     }
     
     // MARK: - View controller transition delegate

@@ -14,11 +14,16 @@ import Highlightr
 /// The View controller for editing a Markdown file.
 class DocumentViewController: UIViewController, WKNavigationDelegate {
     
+    /// Returns a newly initialized instance from Storyboard.
+    static func makeViewController() -> DocumentViewController {
+        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DocumentViewController") as! DocumentViewController
+    }
+    
     /// The segmented control for switching between edition and preview.
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     /// The bar button item for showing headers.
-    var showHeadersBarButtonItem: UIBarButtonItem!
+    @IBOutlet weak var showHeadersBarButtonItem: UIBarButtonItem!
     
     private var shouldShowHeadersOnWebViewDidLoad = false
     
@@ -44,19 +49,30 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
     /// The Web view containing the preview.
     var webView: WKWebView!
     
-    /// The document to edit.
-    var document: Document?
-    
-    /// The path extension of `document`.
-    var pathExtension: String? {
-        return document?.fileURL.pathExtension.lowercased()
+    /// The document to edit. This document should already be open. Should not be nil!
+    var document: Document! {
+        didSet {
+            title = document.fileURL.lastPathComponent
+            textView.text = document.text
+            if pathExtension == "md" || pathExtension == "markdown" {
+                segmentedControl.isHidden = false
+                textStorage.language = "markdown"
+            } else if pathExtension == "html" || pathExtension == "htm" {
+                segmentedControl.isHidden = false
+                textStorage.language = "xml"
+            } else {
+                segmentedControl.isHidden = true
+            }
+        }
     }
     
-    /// If the document is opened.
-    var isDocumentOpen = false
+    /// The path extension of `document`.
+    var pathExtension: String {
+        return document.fileURL.pathExtension.lowercased()
+    }
     
     /// Shows headers of markdown file.
-    @objc func showHeaders(_ sender: UIBarButtonItem) {
+    @IBAction func showHeaders(_ sender: UIBarButtonItem) {
         guard !webView.isHidden else {
             shouldShowHeadersOnWebViewDidLoad = true
             segmentedControl.selectedSegmentIndex = 1
@@ -88,14 +104,12 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
     }
     
     /// Exports file.
-    @objc func export(_ sender: UIBarButtonItem) {
+    @IBAction func export(_ sender: UIBarButtonItem) {
         
-        guard let url = document?.fileURL else {
-            return
-        }
+        let url = document.fileURL
         
         guard sender.tag == 1 else { // Auto save
-            document?.save(to: url, for: .forOverwriting, completionHandler: { _ in
+            document.save(to: url, for: .forOverwriting, completionHandler: { _ in
                 sender.tag = 1
                 self.export(sender)
             })
@@ -184,7 +198,7 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
     @IBAction func changeMode(_ sender: UISegmentedControl) {
         webView.isHidden = (sender.selectedSegmentIndex == 0)
         textView.isHidden = !webView.isHidden
-        document?.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: nil)
+        document.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: nil)
         
         if textView.isHidden {
             textView.resignFirstResponder()
@@ -202,14 +216,14 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
         
         guard !textView.isFirstResponder else {
             textView.resignFirstResponder()
-            document?.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: nil)
+            document.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: nil)
             return
         }
         
         dismiss(animated: true) {
-            self.document?.text = self.textView.text
-            self.document?.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: { (success) in
-                self.document?.close(completionHandler: nil)
+            self.document.text = self.textView.text
+            self.document.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: { (success) in
+                self.document.close(completionHandler: nil)
                 
                 if !success {
                     UIApplication.shared.keyWindow?.rootViewController?.presentMessage("An error occurred while saving '\(self.document!.fileURL.lastPathComponent)'", withTitle: "Error saving file!")
@@ -248,34 +262,6 @@ class DocumentViewController: UIViewController, WKNavigationDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Access the document
-        if !isDocumentOpen {
-            isDocumentOpen = true
-            document?.open(completionHandler: { (success) in
-                if success {
-                    self.title = self.document?.fileURL.lastPathComponent
-                    self.textView.text = self.document?.text
-                    self.showHeadersBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.showHeaders(_:)))
-                    self.navigationItem.leftBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(self.export(_:))), self.showHeadersBarButtonItem]
-                    
-                    if self.pathExtension == "md" || self.pathExtension == "markdown" {
-                        self.segmentedControl.isHidden = false
-                        self.textStorage.language = "markdown"
-                    } else if self.pathExtension == "html" || self.pathExtension == "htm" {
-                        self.segmentedControl.isHidden = false
-                        self.textStorage.language = "xml"
-                    }
-                    
-                } else {
-                    self.presentMessage("An error occurred while reading file.", withTitle: "Error reading file!")
-                }
-            })
-        }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         
         textView.frame = view.safeAreaLayoutGuide.layoutFrame
         webView.frame = textView.frame
