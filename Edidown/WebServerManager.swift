@@ -150,7 +150,7 @@ class WebServerManager: NSObject, GCDWebServerDelegate, UNUserNotificationCenter
                 return self.fileBrowser(forDirectory: request.path)
             }
             
-            notifBody = "The web server's root was request and '\(url.lastPathComponent)' was found. Its content will be returned and parsed if needed."
+            notifBody = "The web server's root was requested and '\(url.lastPathComponent)' was found. Its content will be returned and parsed if needed."
             return response(forFile: url)
         }
         webServer.delegate = self
