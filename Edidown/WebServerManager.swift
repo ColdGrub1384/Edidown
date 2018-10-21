@@ -96,16 +96,16 @@ class WebServerManager: NSObject, GCDWebServerDelegate, UNUserNotificationCenter
             var isDir: ObjCBool = false
             let fileExists = FileManager.default.fileExists(atPath: self.wwwDirectory.appendingPathComponent(request.path).path, isDirectory: &isDir)
             guard fileExists else {
-                notifBody = "'\(request.path)' was requested but a 404 error will be returned."
+                notifBody = "'\(request.path)' was requested but the file is not found. A 404 error will be returned."
                 return self.error404
             }
             
             guard isDir.boolValue else {
                 if FileManager.default.fileExists(atPath: self.wwwDirectory.appendingPathComponent(request.path).path) {
-                    notifBody = "'\(request.path)' file was requested and a list of its content will be returned and parsed if needed."
+                    notifBody = "'\(request.path)' file was requested and its content will be returned and parsed if needed."
                     return response(forFile: self.wwwDirectory.appendingPathComponent(request.path))
                 } else {
-                    notifBody = "'\(request.path)' was requested but a 404 error will be returned."
+                    notifBody = "'\(request.path)' was requested but the file is not found. A 404 error will be returned."
                     return self.error404
                 }
             }
