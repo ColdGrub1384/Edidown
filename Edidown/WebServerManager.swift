@@ -91,6 +91,8 @@ class WebServerManager: NSObject, GCDWebServerDelegate, UNUserNotificationCenter
                 
                 set {
                     
+                    let id = request.url.absoluteString
+                    
                     guard !self.allowedAddresses.contains(request.localAddressData) else {
                         return
                     }
@@ -106,17 +108,27 @@ class WebServerManager: NSObject, GCDWebServerDelegate, UNUserNotificationCenter
                     let request = UNNotificationRequest(identifier: request.url.absoluteString, content: notifContent, trigger: trigger)
                     UNUserNotificationCenter.current().setNotificationCategories([category])
                     UNUserNotificationCenter.current().delegate = self
-                    UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                    
+                    UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+                        if settings.authorizationStatus == .denied {
+                            self.requestingAddresses[id] = nil
+                            self.sentResponses[id] = self.requestedResponses[id]
+                            self.semaphores[id]?.signal()
+                        } else {
+                            UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                        }
+                    })
                 }
             }
             
-            func send(response: GCDWebServerResponse?) -> GCDWebServerResponse? {
+            func send(response: GCDWebServerResponse?, notificationBody: String) -> GCDWebServerResponse? {
                 guard !self.allowedAddresses.contains(request.localAddressData) else {
                     return response
                 }
                 self.requestingAddresses[request.url.absoluteString] = request.localAddressData
                 self.requestedResponses[request.url.absoluteString] = response
                 self.semaphores[request.url.absoluteString] = DispatchSemaphore(value: 0)
+                notifBody = notificationBody
                 self.semaphores[request.url.absoluteString]?.wait()
                 return self.sentResponses[request.url.absoluteString]
             }
@@ -124,17 +136,14 @@ class WebServerManager: NSObject, GCDWebServerDelegate, UNUserNotificationCenter
             var isDir: ObjCBool = false
             let fileExists = FileManager.default.fileExists(atPath: self.wwwDirectory.appendingPathComponent(request.path).path, isDirectory: &isDir)
             guard fileExists else {
-                notifBody = "'\(request.path)' was requested but the file is not found. A 404 error will be returned. Do you want to allow or disallow access?"
-                return send(response: self.error404)
+                return send(response: self.error404, notificationBody: "'\(request.path)' was requested but the file is not found. A 404 error will be returned. Do you want to allow or disallow access?")
             }
             
             guard isDir.boolValue else {
                 if FileManager.default.fileExists(atPath: self.wwwDirectory.appendingPathComponent(request.path).path) {
-                    notifBody = "'\(request.path)' file was requested and its content will be returned and parsed if needed. Do you want to allow or disallow access?"
-                    return send(response: response(forFile: self.wwwDirectory.appendingPathComponent(request.path)))
+                    return send(response: response(forFile: self.wwwDirectory.appendingPathComponent(request.path)), notificationBody: "'\(request.path)' file was requested and its content will be returned and parsed if needed. Do you want to allow or disallow access?")
                 } else {
-                    notifBody = "'\(request.path)' was requested but the file is not found. A 404 error will be returned. Do you want to allow or disallow access?"
-                    return send(response: self.error404)
+                    return send(response: self.error404, notificationBody: "'\(request.path)' was requested but the file is not found. A 404 error will be returned. Do you want to allow or disallow access?")
                 }
             }
             
@@ -174,12 +183,10 @@ class WebServerManager: NSObject, GCDWebServerDelegate, UNUserNotificationCenter
             }
             
             guard let url = fileURL else {
-                notifBody = "The web server's root was requested but no index file is found. A list of files will be returned. Do you want to allow or disallow access?"
-                return send(response: self.fileBrowser(forDirectory: request.path))
+                return send(response: self.fileBrowser(forDirectory: request.path), notificationBody: "The web server's root was requested but no index file is found. A list of files will be returned. Do you want to allow or disallow access?")
             }
             
-            notifBody = "The web server's root was requested and '\(url.lastPathComponent)' was found. Its content will be returned and parsed if needed. Do you want to allow or disallow access?"
-            return send(response: response(forFile: url))
+            return send(response: response(forFile: url), notificationBody: "The web server's root was requested and '\(url.lastPathComponent)' was found. Its content will be returned and parsed if needed. Do you want to allow or disallow access?")
         }
         webServer.delegate = self
         try? webServer.start(options: [GCDWebServerOption_AutomaticallySuspendInBackground : false, GCDWebServerOption_Port : 80, GCDWebServerOption_BonjourName : UIDevice.current.name])
