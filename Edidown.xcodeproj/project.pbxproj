@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C900D09F217CBF0F00E645A6 /* UIWindow+rootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C900D09E217CBF0F00E645A6 /* UIWindow+rootViewController.swift */; };
 		C9030B2521794549001BDD69 /* JSHeadersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9030B2421794549001BDD69 /* JSHeadersTableViewController.swift */; };
 		C9030B84217BA6C8001BDD69 /* GCDWebServers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9030B7F217BA6B7001BDD69 /* GCDWebServers.framework */; };
 		C9030B85217BA6C8001BDD69 /* GCDWebServers.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9030B7F217BA6B7001BDD69 /* GCDWebServers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -153,6 +154,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C900D09E217CBF0F00E645A6 /* UIWindow+rootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+rootViewController.swift"; sourceTree = "<group>"; };
 		C9030B2421794549001BDD69 /* JSHeadersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSHeadersTableViewController.swift; sourceTree = "<group>"; };
 		C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GCDWebServer.xcodeproj; path = GCDWebServer/GCDWebServer.xcodeproj; sourceTree = "<group>"; };
 		C9030B88217BA715001BDD69 /* index.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = index.md; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				C9EF7DEB217512190055DFDF /* String+ranges.swift */,
 				C9EF7DEF217518060055DFDF /* NSRange+toTextRange.swift */,
 				C9EF7DF12175209B0055DFDF /* UIViewController+presentError.swift */,
+				C900D09E217CBF0F00E645A6 /* UIWindow+rootViewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 				C9F04F112174E92900BDD03E /* TemplateChooserViewController.swift in Sources */,
 				C9EF7DEC217512190055DFDF /* String+ranges.swift in Sources */,
 				C987DCEC2175363E00889300 /* ParseMarkdown.swift in Sources */,
+				C900D09F217CBF0F00E645A6 /* UIWindow+rootViewController.swift in Sources */,
 				C9F04E9E2173EDFA00BDD03E /* DocumentViewController.swift in Sources */,
 				C9F04E9C2173EDFA00BDD03E /* DocumentBrowserViewController.swift in Sources */,
 				C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */,
