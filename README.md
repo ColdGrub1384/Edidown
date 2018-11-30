@@ -1,7 +1,7 @@
 <p align="center">
   <a href="https://github.com/ColdGrub1384/Pisth">Pisth</a> &bull;
   <b>Edidown</b> &bull;
-  <a href="https://github.com/ColdGrub1384/Pyto">Pyto</a>
+  <a href="https://github.com/ColdGrub1384/Pyto">Pyto</a> &bull;
   <a href="https://github.com/ColdGrub1384/Luade">Luade</a>
 </p>
 
