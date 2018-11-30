@@ -2,6 +2,7 @@
   <a href="https://github.com/ColdGrub1384/Pisth">Pisth</a> &bull;
   <b>Edidown</b> &bull;
   <a href="https://github.com/ColdGrub1384/Pyto">Pyto</a>
+  <a href="https://github.com/ColdGrub1384/Luade">Luade</a>
 </p>
 
 ![Icon](https://raw.githubusercontent.com/ColdGrub1384/Edidown/master/Edidown/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60%402x.png)
