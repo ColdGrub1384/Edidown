@@ -11,4 +11,4 @@
 
 [![Download on the App Store](https://pisth.github.io/appstorebadge.svg)](https://itunes.apple.com/us/app/edidown-markup-editor/id1439139639?l=fr&ls=1&mt=8)
 
-Edidown is a Markdown, HTML, plain text editor and web server for iOS with system integration.
+Edidown is a Markdown, HTML, code, plain text editor and web server for iOS with system integration.

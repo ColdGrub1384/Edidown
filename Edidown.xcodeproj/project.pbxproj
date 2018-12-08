@@ -13,6 +13,7 @@
 		C9030B85217BA6C8001BDD69 /* GCDWebServers.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9030B7F217BA6B7001BDD69 /* GCDWebServers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9030B89217BB5FC001BDD69 /* index.md in Resources */ = {isa = PBXBuildFile; fileRef = C9030B88217BA715001BDD69 /* index.md */; };
 		C9030B8B217BC34E001BDD69 /* WebServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9030B8A217BC34E001BDD69 /* WebServerManager.swift */; };
+		C93634D021BC6EEA00785AC8 /* langs.plist in Resources */ = {isa = PBXBuildFile; fileRef = C93634C621BC6EEA00785AC8 /* langs.plist */; };
 		C987DCEC2175363E00889300 /* ParseMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = C987DCEB2175363E00889300 /* ParseMarkdown.swift */; };
 		C9C552C32175621B00F43B34 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9C552C22175621B00F43B34 /* Settings.bundle */; };
 		C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */; };
@@ -159,6 +160,7 @@
 		C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GCDWebServer.xcodeproj; path = GCDWebServer/GCDWebServer.xcodeproj; sourceTree = "<group>"; };
 		C9030B88217BA715001BDD69 /* index.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = index.md; sourceTree = "<group>"; };
 		C9030B8A217BC34E001BDD69 /* WebServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServerManager.swift; sourceTree = "<group>"; };
+		C93634C621BC6EEA00785AC8 /* langs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = langs.plist; sourceTree = "<group>"; };
 		C987DCEB2175363E00889300 /* ParseMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseMarkdown.swift; sourceTree = "<group>"; };
 		C9C552C22175621B00F43B34 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersTableViewController.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 		C987DCEA217531D700889300 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C93634C621BC6EEA00785AC8 /* langs.plist */,
 				C9F04F0E2174E66800BDD03E /* body.html */,
 				C9030B88217BA715001BDD69 /* index.md */,
 				C9F04EA12173EDFA00BDD03E /* Main.storyboard */,
@@ -462,6 +465,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C93634D021BC6EEA00785AC8 /* langs.plist in Resources */,
 				C9F04F192174EAF900BDD03E /* Templates in Resources */,
 				C9F04F0F2174E66800BDD03E /* body.html in Resources */,
 				C9F04EA82173EDFC00BDD03E /* LaunchScreen.storyboard in Resources */,

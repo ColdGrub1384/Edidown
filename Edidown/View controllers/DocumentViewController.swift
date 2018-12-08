@@ -68,6 +68,16 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
             } else {
                 segmentedControl.isHidden = true
                 showHeadersBarButtonItem.isEnabled = false
+                
+                // Syntax coloring
+                
+                let languages = NSDictionary(contentsOf: Bundle.main.bundleURL.appendingPathComponent("langs.plist"))! as! [String:[String]] // List of languages associated by file extensions
+                
+                if let languagesForFile = languages[document.fileURL.pathExtension.lowercased()] {
+                    if languagesForFile.count > 0 {
+                        textStorage.language = languagesForFile[0]
+                    }
+                }
             }
         }
     }

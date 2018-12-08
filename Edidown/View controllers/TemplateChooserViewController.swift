@@ -20,6 +20,9 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
         /// An HTML document.
         case html
         
+        /// Code.
+        case code
+        
         /// A plain text document.
         case txt
     }
@@ -33,27 +36,45 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
     /// The type of templates to choose.
     var type = TemplateType.markdown {
         didSet {
+            
             templatesName = []
             templatesURL = []
-            if let blank = templates["Blank document"] { // Always put 'Blank document' at top
-                templatesName.append("Blank document")
-                templatesURL.append(blank)
-            }
-            for file in templates {
-                guard file.key != "Blank document" else {
-                    continue
-                }
-                templatesName.append(file.key)
-                templatesURL.append(file.value)
-            }
+            
+            let activityIndicator = UIActivityIndicatorView(style: .gray)
+            activityIndicator.startAnimating()
+            
             tableView.reloadData()
+            tableView.backgroundView = activityIndicator
+            
+            DispatchQueue.global().async { // Sorting an array can take a lot of time
+                
+                let currentType = self.type
+                
+                let keys = self.templates.keys.sorted(by: { $0.lowercased() < $1.lowercased() })
+                for key in keys {
+                    guard currentType == self.type else {
+                        break
+                    }
+                    
+                    self.templatesName.append(key)
+                    self.templatesURL.append(self.templates[key]!)
+                }
+                
+                DispatchQueue.main.async {
+                    self.tableView.backgroundView = nil
+                    self.tableView.reloadData()
+                }
+            }
         }
     }
     
     /// Choosable templates URLs per name depending on `type`.
     var templates: [String:URL] {
         
-        guard let plistURL = Bundle.main.url(forResource: "Templates", withExtension: "plist"), var templatesURL = Bundle.main.url(forResource: "Templates", withExtension: nil) else {
+        guard
+            let plistURL = Bundle.main.url(forResource: "Templates", withExtension: "plist"),
+            let langsURL = Bundle.main.url(forResource: "langs", withExtension: "plist"),
+            var templatesURL = Bundle.main.url(forResource: "Templates", withExtension: nil) else {
             return [:]
         }
         var templates = [String:URL]()
@@ -77,6 +98,14 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
             
             for file in templatesDict {
                 templates[file.key] = templatesURL.appendingPathComponent(file.value)
+            }
+        } else if type == .code, let templatesDict = NSDictionary(contentsOf: langsURL) {
+            templatesURL.appendPathComponent("Code/Untitled")
+            
+            for file in templatesDict {
+                if let key = file.key as? String {
+                    templates[key] = templatesURL.appendingPathExtension(key)
+                }
             }
         }
         
@@ -104,6 +133,8 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
         } else if sender.selectedSegmentIndex == 1 {
             type = .html
         } else if sender.selectedSegmentIndex == 2 {
+            type = .code
+        } else if sender.selectedSegmentIndex == 3 {
             type = .txt
         }
     }
@@ -136,7 +167,17 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismiss(animated: true) {
-            self.importHandler?(self.templatesURL[indexPath.row], .copy)
+            if self.type != .code {
+                self.importHandler?(self.templatesURL[indexPath.row], .copy)
+            } else {
+                let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(self.templatesURL[indexPath.row].lastPathComponent)
+                do {
+                    try FileManager.default.copyItem(at: self.templatesURL[indexPath.row].deletingPathExtension(), to: url)
+                    self.importHandler?(url, .copy)
+                } catch {
+                    UIApplication.shared.keyWindow?.rootViewController?.presentError(error, withTitle: "Error copying template!")
+                }
+            }
         }
     }
 }
