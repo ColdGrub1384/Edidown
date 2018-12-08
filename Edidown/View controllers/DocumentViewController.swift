@@ -67,6 +67,7 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                 textStorage.language = "xml"
             } else {
                 segmentedControl.isHidden = true
+                showHeadersBarButtonItem.isEnabled = false
             }
         }
     }
