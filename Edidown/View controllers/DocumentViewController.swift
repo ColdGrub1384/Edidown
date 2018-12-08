@@ -59,15 +59,26 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         didSet {
             title = document.fileURL.lastPathComponent
             textView.text = document.text
+            
+            segmentedControl.isHidden = false
+            
+            textView.autocorrectionType = .default
+            textView.autocapitalizationType = .sentences
+            textView.smartDashesType = .default
+            textView.smartQuotesType = .default
+            
             if pathExtension == "md" || pathExtension == "markdown" {
-                segmentedControl.isHidden = false
                 textStorage.language = "markdown"
             } else if pathExtension == "html" || pathExtension == "htm" {
-                segmentedControl.isHidden = false
                 textStorage.language = "xml"
             } else {
                 segmentedControl.isHidden = true
                 showHeadersBarButtonItem.isEnabled = false
+                
+                textView.autocorrectionType = .no
+                textView.autocapitalizationType = .none
+                textView.smartDashesType = .no
+                textView.smartQuotesType = .no
                 
                 // Syntax coloring
                 
