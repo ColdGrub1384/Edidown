@@ -171,6 +171,9 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
                 self.importHandler?(self.templatesURL[indexPath.row], .copy)
             } else {
                 let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(self.templatesURL[indexPath.row].lastPathComponent)
+                if FileManager.default.fileExists(atPath: url.path) {
+                    try? FileManager.default.removeItem(at: url)
+                }
                 do {
                     try FileManager.default.copyItem(at: self.templatesURL[indexPath.row].deletingPathExtension(), to: url)
                     self.importHandler?(url, .copy)
