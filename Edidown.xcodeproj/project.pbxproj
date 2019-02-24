@@ -13,6 +13,15 @@
 		C9030B85217BA6C8001BDD69 /* GCDWebServers.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9030B7F217BA6B7001BDD69 /* GCDWebServers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9030B89217BB5FC001BDD69 /* index.md in Resources */ = {isa = PBXBuildFile; fileRef = C9030B88217BA715001BDD69 /* index.md */; };
 		C9030B8B217BC34E001BDD69 /* WebServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9030B8A217BC34E001BDD69 /* WebServerManager.swift */; };
+		C906D38A2222BFA300318ADF /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C906D36C2222BFA200318ADF /* Storage.swift */; };
+		C906D38B2222BFA300318ADF /* UniversalTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C906D36D2222BFA200318ADF /* UniversalTypes.swift */; };
+		C906D38D2222BFA300318ADF /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = C906D36F2222BFA200318ADF /* Element.swift */; };
+		C906D38E2222BFA300318ADF /* Notepad-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C906D3702222BFA200318ADF /* Notepad-iOS.swift */; };
+		C906D38F2222BFA300318ADF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C906D3712222BFA200318ADF /* Extensions.swift */; };
+		C906D3902222BFA300318ADF /* Notepad-macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C906D3722222BFA200318ADF /* Notepad-macOS.swift */; };
+		C906D3912222BFA300318ADF /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = C906D3732222BFA200318ADF /* Style.swift */; };
+		C906D3922222BFA300318ADF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C906D3752222BFA200318ADF /* Theme.swift */; };
+		C906D39E2222C55C00318ADF /* themes in Resources */ = {isa = PBXBuildFile; fileRef = C906D39D2222C55C00318ADF /* themes */; };
 		C93634D021BC6EEA00785AC8 /* langs.plist in Resources */ = {isa = PBXBuildFile; fileRef = C93634C621BC6EEA00785AC8 /* langs.plist */; };
 		C987DCEC2175363E00889300 /* ParseMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = C987DCEB2175363E00889300 /* ParseMarkdown.swift */; };
 		C9C552C32175621B00F43B34 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9C552C22175621B00F43B34 /* Settings.bundle */; };
@@ -160,6 +169,18 @@
 		C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GCDWebServer.xcodeproj; path = GCDWebServer/GCDWebServer.xcodeproj; sourceTree = "<group>"; };
 		C9030B88217BA715001BDD69 /* index.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = index.md; sourceTree = "<group>"; };
 		C9030B8A217BC34E001BDD69 /* WebServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServerManager.swift; sourceTree = "<group>"; };
+		C906D36C2222BFA200318ADF /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		C906D36D2222BFA200318ADF /* UniversalTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalTypes.swift; sourceTree = "<group>"; };
+		C906D36E2222BFA200318ADF /* Notepad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notepad.m; sourceTree = "<group>"; };
+		C906D36F2222BFA200318ADF /* Element.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
+		C906D3702222BFA200318ADF /* Notepad-iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notepad-iOS.swift"; sourceTree = "<group>"; };
+		C906D3712222BFA200318ADF /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		C906D3722222BFA200318ADF /* Notepad-macOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notepad-macOS.swift"; sourceTree = "<group>"; };
+		C906D3732222BFA200318ADF /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		C906D3742222BFA200318ADF /* Notepad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notepad.h; sourceTree = "<group>"; };
+		C906D3752222BFA200318ADF /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		C906D3802222BFA200318ADF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C906D39D2222C55C00318ADF /* themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = themes; sourceTree = "<group>"; };
 		C93634C621BC6EEA00785AC8 /* langs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = langs.plist; sourceTree = "<group>"; };
 		C987DCEB2175363E00889300 /* ParseMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseMarkdown.swift; sourceTree = "<group>"; };
 		C9C552C22175621B00F43B34 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -212,6 +233,26 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		C906D36B2222BFA200318ADF /* Notepad */ = {
+			isa = PBXGroup;
+			children = (
+				C906D36C2222BFA200318ADF /* Storage.swift */,
+				C906D36D2222BFA200318ADF /* UniversalTypes.swift */,
+				C906D36E2222BFA200318ADF /* Notepad.m */,
+				C906D36F2222BFA200318ADF /* Element.swift */,
+				C906D3702222BFA200318ADF /* Notepad-iOS.swift */,
+				C906D3712222BFA200318ADF /* Extensions.swift */,
+				C906D3722222BFA200318ADF /* Notepad-macOS.swift */,
+				C906D3732222BFA200318ADF /* Style.swift */,
+				C906D3742222BFA200318ADF /* Notepad.h */,
+				C906D3752222BFA200318ADF /* Theme.swift */,
+				C906D39D2222C55C00318ADF /* themes */,
+				C906D3802222BFA200318ADF /* Info.plist */,
+			);
+			name = Notepad;
+			path = Notepad/Notepad;
+			sourceTree = "<group>";
+		};
 		C987DCE6217531A700889300 /* View controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,6 +299,7 @@
 				C9030B6B217BA6B6001BDD69 /* GCDWebServer.xcodeproj */,
 				C9F04F012174E17F00BDD03E /* Highlightr.xcodeproj */,
 				C9F04EB12173F43600BDD03E /* Down.xcodeproj */,
+				C906D36B2222BFA200318ADF /* Notepad */,
 				C9F04E982173EDFA00BDD03E /* Edidown */,
 				C9F04E972173EDFA00BDD03E /* Products */,
 			);
@@ -465,6 +507,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C906D39E2222C55C00318ADF /* themes in Resources */,
 				C93634D021BC6EEA00785AC8 /* langs.plist in Resources */,
 				C9F04F192174EAF900BDD03E /* Templates in Resources */,
 				C9F04F0F2174E66800BDD03E /* body.html in Resources */,
@@ -506,18 +549,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9F04EA02173EDFA00BDD03E /* Document.swift in Sources */,
+				C906D38A2222BFA300318ADF /* Storage.swift in Sources */,
 				C9EF7DF22175209B0055DFDF /* UIViewController+presentError.swift in Sources */,
 				C9F04F112174E92900BDD03E /* TemplateChooserViewController.swift in Sources */,
 				C9EF7DEC217512190055DFDF /* String+ranges.swift in Sources */,
+				C906D38E2222BFA300318ADF /* Notepad-iOS.swift in Sources */,
 				C987DCEC2175363E00889300 /* ParseMarkdown.swift in Sources */,
+				C906D38F2222BFA300318ADF /* Extensions.swift in Sources */,
 				C900D09F217CBF0F00E645A6 /* UIWindow+rootViewController.swift in Sources */,
 				C9F04E9E2173EDFA00BDD03E /* DocumentViewController.swift in Sources */,
 				C9F04E9C2173EDFA00BDD03E /* DocumentBrowserViewController.swift in Sources */,
+				C906D38B2222BFA300318ADF /* UniversalTypes.swift in Sources */,
 				C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */,
+				C906D38D2222BFA300318ADF /* Element.swift in Sources */,
 				C9EF7DF0217518060055DFDF /* NSRange+toTextRange.swift in Sources */,
+				C906D3922222BFA300318ADF /* Theme.swift in Sources */,
 				C9030B2521794549001BDD69 /* JSHeadersTableViewController.swift in Sources */,
 				C9F04E9A2173EDFA00BDD03E /* AppDelegate.swift in Sources */,
+				C906D3902222BFA300318ADF /* Notepad-macOS.swift in Sources */,
 				C9030B8B217BC34E001BDD69 /* WebServerManager.swift in Sources */,
+				C906D3912222BFA300318ADF /* Style.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

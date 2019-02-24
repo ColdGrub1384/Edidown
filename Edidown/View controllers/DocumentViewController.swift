@@ -43,7 +43,7 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     }
     
     /// The text storage used in `textView`.
-    let textStorage = CodeAttributedString()
+    var textStorage: NSTextStorage!
     
     /// The Text view containing the raw content.
     var textView: UITextView!
@@ -58,19 +58,28 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     var document: Document! {
         didSet {
             title = document.fileURL.lastPathComponent
-            textView.text = document.text
             
             segmentedControl.isHidden = false
             
-            textView.autocorrectionType = .default
-            textView.autocapitalizationType = .sentences
-            textView.smartDashesType = .default
-            textView.smartQuotesType = .default
+            let layoutManager = NSLayoutManager()
+            if pathExtension == "md" || pathExtension == "markdown" {
+                textStorage = Storage()
+                let theme = Theme(themePath: Bundle.main.path(forResource: "themes/one-light", ofType: "json") ?? Bundle.main.bundleURL.appendingPathComponent("themes/one-light.json").path)
+                (textStorage as! Storage).theme = theme
+            } else {
+                textStorage = CodeAttributedString()
+                (textStorage as! CodeAttributedString).highlightr.setTheme(to: "xcode")
+            }
+            
+            textStorage.addLayoutManager(layoutManager)
+            
+            let textContainer = NSTextContainer()
+            layoutManager.addTextContainer(textContainer)
             
             if pathExtension == "md" || pathExtension == "markdown" {
-                textStorage.language = "markdown"
+                (textStorage as? CodeAttributedString)?.language = "markdown"
             } else if pathExtension == "html" || pathExtension == "htm" {
-                textStorage.language = "xml"
+                (textStorage as? CodeAttributedString)?.language = "xml"
             } else {
                 segmentedControl.isHidden = true
                 showHeadersBarButtonItem.isEnabled = false
@@ -86,10 +95,23 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                 
                 if let languagesForFile = languages[document.fileURL.pathExtension.lowercased()] {
                     if languagesForFile.count > 0 {
-                        textStorage.language = languagesForFile[0]
+                        (textStorage as? CodeAttributedString)?.language = languagesForFile[0]
                     }
                 }
             }
+            
+            textView = UITextView(frame: view.safeAreaLayoutGuide.layoutFrame, textContainer: textContainer)
+            textView.isHidden = true
+            textView.smartDashesType = .no
+            textView.smartQuotesType = .no
+            view.addSubview(textView)
+            
+            textView.text = document.text
+            
+            textView.autocorrectionType = .default
+            textView.autocapitalizationType = .sentences
+            textView.smartDashesType = .default
+            textView.smartQuotesType = .default
         }
     }
     
@@ -294,18 +316,6 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         
         segmentedControl.isHidden = true
         
-        textStorage.highlightr.setTheme(to: "xcode")
-        let layoutManager = NSLayoutManager()
-        textStorage.addLayoutManager(layoutManager)
-        
-        let textContainer = NSTextContainer()
-        layoutManager.addTextContainer(textContainer)
-        
-        textView = UITextView(frame: .zero, textContainer: textContainer)
-        textView.smartDashesType = .no
-        textView.smartQuotesType = .no
-        view.addSubview(textView)
-        
         webView = WKWebView(frame: .zero)
         webView.navigationDelegate = self
         webView.isHidden = true
@@ -315,9 +325,10 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
+        textView.isHidden = false
         textView.frame = view.safeAreaLayoutGuide.layoutFrame
         webView.frame = textView.frame
     }

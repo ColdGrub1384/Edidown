@@ -7,3 +7,6 @@
 [submodule "GCDWebServer"]
 	path = GCDWebServer
 	url = https://github.com/swisspol/GCDWebServer.git
+[submodule "Notepad"]
+	path = Notepad
+	url = https://github.com/ruddfawcett/Notepad.git
