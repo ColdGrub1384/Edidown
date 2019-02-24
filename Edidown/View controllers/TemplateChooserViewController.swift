@@ -37,8 +37,8 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
     var type = TemplateType.markdown {
         didSet {
             
-            templatesName = []
-            templatesURL = []
+            templatesName = [:]
+            templatesURL = [:]
             
             let activityIndicator = UIActivityIndicatorView(style: .gray)
             activityIndicator.startAnimating()
@@ -56,8 +56,18 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
                         break
                     }
                     
-                    self.templatesName.append(key)
-                    self.templatesURL.append(self.templates[key]!)
+                    guard let firstChar = key.first else {
+                        continue
+                    }
+                    
+                    let first = String(firstChar)
+                    
+                    if !(self.templatesName[first] != nil) {
+                        self.templatesName[first] = [String]()
+                    }
+                    
+                    self.templatesName[first] = self.templatesName[first]!+[key]
+                    self.templatesURL[key] = self.templates[key]!
                 }
                 
                 DispatchQueue.main.async {
@@ -113,8 +123,8 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
     }
     
     // For `tableView`
-    private var templatesName = [String]()
-    private var templatesURL = [URL]()
+    private var templatesName = [String:[String]]()
+    private var templatesURL = [String:URL]()
     
     /// Cancels the import.
     @IBAction func cancel(_ sender: Any) {
@@ -152,23 +162,48 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
     
     // MARK: - Table view data source
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return templatesName.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return templatesName[((templatesName as NSDictionary).allKeys as! [String]).sorted(by: { $0.lowercased() < $1.lowercased() } )[section]]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = templatesName[indexPath.row]
+        cell.textLabel?.text = templatesName[templatesName.keys.sorted(by: { $0.lowercased() < $1.lowercased() })[indexPath.section]]?[indexPath.row]
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if type == .code {
+            return templatesName.keys.sorted(by: { $0.lowercased() < $1.lowercased() })[section]
+        } else {
+            return nil
+        }
     }
     
     // MARK: - Table view delegate
     
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        if type == .code {
+            return templatesName.keys.sorted(by: {$0.lowercased() < $1.lowercased()})
+        } else {
+            return nil
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        guard let url = self.templatesURL[self.templatesName[self.templatesName.keys.sorted(by: { $0.lowercased() < $1.lowercased() })[indexPath.section]]?[indexPath.row] ?? ""] else {
+            return
+        }
+        
         dismiss(animated: true) {
             
-            let alert = UIAlertController(title: "Create \(self.templatesURL[indexPath.row].pathExtension)", message: "Type the new file name excluding the extension", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Create \(url.pathExtension)", message: "Type the new file name excluding the extension", preferredStyle: .alert)
             alert.addTextField(configurationHandler: { (textField) in
                 textField.placeholder = "File name"
             })
@@ -177,12 +212,12 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
                 if title.isEmpty {
                     title = "Untitled"
                 }
-                let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(title).appendingPathExtension(self.templatesURL[indexPath.row].pathExtension)
+                let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(title).appendingPathExtension(url.pathExtension)
                 if FileManager.default.fileExists(atPath: url.path) {
                     try? FileManager.default.removeItem(at: url)
                 }
                 do {
-                    try FileManager.default.copyItem(at: self.templatesURL[indexPath.row], to: url)
+                    try FileManager.default.copyItem(at: url, to: url)
                     self.importHandler?(url, .copy)
                 } catch {
                     UIApplication.shared.keyWindow?.rootViewController?.presentError(error, withTitle: "Error copying template!")
