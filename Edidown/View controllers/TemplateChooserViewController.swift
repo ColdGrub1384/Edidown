@@ -167,20 +167,29 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismiss(animated: true) {
-            if self.type != .code {
-                self.importHandler?(self.templatesURL[indexPath.row], .copy)
-            } else {
-                let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(self.templatesURL[indexPath.row].lastPathComponent)
+            
+            let alert = UIAlertController(title: "Create \(self.templatesURL[indexPath.row].pathExtension)", message: "Type the new file name excluding the extension", preferredStyle: .alert)
+            alert.addTextField(configurationHandler: { (textField) in
+                textField.placeholder = "File name"
+            })
+            alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { (_) in
+                var title = alert.textFields?.first?.text ?? "Untitled"
+                if title.isEmpty {
+                    title = "Untitled"
+                }
+                let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(title).appendingPathExtension(self.templatesURL[indexPath.row].pathExtension)
                 if FileManager.default.fileExists(atPath: url.path) {
                     try? FileManager.default.removeItem(at: url)
                 }
                 do {
-                    try FileManager.default.copyItem(at: self.templatesURL[indexPath.row].deletingPathExtension(), to: url)
+                    try FileManager.default.copyItem(at: self.templatesURL[indexPath.row], to: url)
                     self.importHandler?(url, .copy)
                 } catch {
                     UIApplication.shared.keyWindow?.rootViewController?.presentError(error, withTitle: "Error copying template!")
                 }
-            }
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            UIApplication.shared.keyWindow?.topViewController?.present(alert, animated: true, completion: nil)
         }
     }
 }
