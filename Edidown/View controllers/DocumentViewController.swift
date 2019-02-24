@@ -76,10 +76,29 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
             let textContainer = NSTextContainer()
             layoutManager.addTextContainer(textContainer)
             
+            var isScript = false
+            
             if pathExtension == "md" || pathExtension == "markdown" {
                 (textStorage as? CodeAttributedString)?.language = "markdown"
             } else if pathExtension == "html" || pathExtension == "htm" {
                 (textStorage as? CodeAttributedString)?.language = "xml"
+            } else {
+                isScript = true
+            }
+            
+            textView = UITextView(frame: view.safeAreaLayoutGuide.layoutFrame, textContainer: textContainer)
+            textView.isHidden = true
+            textView.smartDashesType = .no
+            textView.smartQuotesType = .no
+            view.addSubview(textView)
+            
+            textView.text = document.text
+            
+            if !isScript {
+                textView.autocorrectionType = .default
+                textView.autocapitalizationType = .sentences
+                textView.smartDashesType = .default
+                textView.smartQuotesType = .default
             } else {
                 segmentedControl.isHidden = true
                 showHeadersBarButtonItem.isEnabled = false
@@ -99,19 +118,6 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                     }
                 }
             }
-            
-            textView = UITextView(frame: view.safeAreaLayoutGuide.layoutFrame, textContainer: textContainer)
-            textView.isHidden = true
-            textView.smartDashesType = .no
-            textView.smartQuotesType = .no
-            view.addSubview(textView)
-            
-            textView.text = document.text
-            
-            textView.autocorrectionType = .default
-            textView.autocapitalizationType = .sentences
-            textView.smartDashesType = .default
-            textView.smartQuotesType = .default
         }
     }
     
