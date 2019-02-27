@@ -45,6 +45,9 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     /// The bar button item for showing headers.
     @IBOutlet weak var showHeadersBarButtonItem: UIBarButtonItem!
     
+    /// The bar button item for picking an image.
+    @IBOutlet weak var pickImageBarButtonItem: UIBarButtonItem!
+    
     private var shouldShowHeadersOnWebViewDidLoad = false
     
     /// HTML code to be shown before the markdown or HTMl content. Put styles and metas.
@@ -120,7 +123,23 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                 textView.backgroundColor = (textStorage as? Storage)?.theme?.backgroundColor
             } else {
                 segmentedControl.isHidden = true
-                showHeadersBarButtonItem.isEnabled = false
+                
+                var i = 0
+                for item in navigationItem.leftBarButtonItems ?? [] {
+                    if item === showHeadersBarButtonItem {
+                        navigationItem.leftBarButtonItems?.remove(at: i)
+                    } else {
+                        i += 1
+                    }
+                }
+                i = 0
+                for item in navigationItem.rightBarButtonItems ?? [] {
+                    if item === pickImageBarButtonItem {
+                        navigationItem.rightBarButtonItems?.remove(at: i)
+                    } else {
+                        i += 1
+                    }
+                }
                 
                 textView.autocorrectionType = .no
                 textView.autocapitalizationType = .none

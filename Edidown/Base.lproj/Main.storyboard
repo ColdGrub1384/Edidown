@@ -53,13 +53,14 @@
                             </barButtonItem>
                             <barButtonItem systemItem="add" id="VRO-uX-VxO">
                                 <connections>
-                                    <action selector="pickImage:" destination="M2k-L8-Olo" id="dbM-cx-tUu"/>
+                                    <action selector="pickImage:" destination="M2k-L8-Olo" id="CxL-5t-AcR"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="pickImageBarButtonItem" destination="VRO-uX-VxO" id="CAF-9n-8jW"/>
                         <outlet property="segmentedControl" destination="PMd-C9-Pfo" id="hDU-PL-Siu"/>
                         <outlet property="showHeadersBarButtonItem" destination="nJa-On-OKs" id="zVY-2N-myF"/>
                     </connections>
