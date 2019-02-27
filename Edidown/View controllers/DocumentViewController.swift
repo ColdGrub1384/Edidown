@@ -99,6 +99,8 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                 textView.autocapitalizationType = .sentences
                 textView.smartDashesType = .default
                 textView.smartQuotesType = .default
+                
+                textView.backgroundColor = (textStorage as? Storage)?.theme?.backgroundColor
             } else {
                 segmentedControl.isHidden = true
                 showHeadersBarButtonItem.isEnabled = false
@@ -281,10 +283,24 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         
         var code = ""
         
+        let foregroundColor = (textStorage as? Storage)?.theme?.body.attributes[.foregroundColor] as? UIColor ?? .black
+        
+        var r:CGFloat = 0
+        var g:CGFloat = 0
+        var b:CGFloat = 0
+        var a:CGFloat = 0
+        
+        foregroundColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        
+        var head = DocumentViewController.htmlHead
+        head = head.replacingOccurrences(of: "%COLOR%", with: String(format:"#%06x", rgb))
+        
         if pathExtension == "md" || pathExtension == "markdown" {
-           code = DocumentViewController.htmlHead+"\n"+ParseMarkdown(textView.text)
+           code = head+"\n"+ParseMarkdown(textView.text)
         } else if pathExtension == "html" || pathExtension == "htm" {
-            code = DocumentViewController.htmlHead+"\n"+textView.text
+            code = head+"\n"+textView.text
         }
         
         let docs = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0]
@@ -346,6 +362,8 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         webView = WKWebView(frame: .zero)
         webView.navigationDelegate = self
         webView.isHidden = true
+        webView.backgroundColor = .clear
+        webView.isOpaque = false
         view.addSubview(webView)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -488,6 +506,7 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         
         if let mdStorage = textStorage as? Storage {
             mdStorage.theme = Theme(themePath: Bundle.main.path(forResource: "themes/\(themeName)", ofType: "json") ?? Bundle.main.bundleURL.appendingPathComponent("themes/\(themeName).json").path)
+            textView.backgroundColor = mdStorage.theme?.backgroundColor
         } else if let codeStorage = textStorage as? CodeAttributedString {
             codeStorage.highlightr.setTheme(to: themeName)
             textView.backgroundColor = codeStorage.highlightr.theme.themeBackgroundColor
@@ -498,9 +517,15 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         if darkMode {
             textView.keyboardAppearance = .dark
             navigationController?.navigationBar.barStyle = .black
+            (presentingViewController as? UIDocumentBrowserViewController)?.browserUserInterfaceStyle = .dark
         } else {
             textView.keyboardAppearance = .default
             navigationController?.navigationBar.barStyle = .default
+            (presentingViewController as? UIDocumentBrowserViewController)?.browserUserInterfaceStyle = .white
+        }
+        
+        if !webView.isHidden {
+            loadPreview()
         }
     }
 }
