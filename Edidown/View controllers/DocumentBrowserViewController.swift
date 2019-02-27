@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 
 /// The main document browser.
-class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate, UIViewControllerTransitioningDelegate {
+class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate, UIViewControllerTransitioningDelegate, SettingsDelegate {
     
     /// Transition controller for presenting and dismissing View controllers.
     var transitionController: UIDocumentBrowserTransitionController?
@@ -27,9 +27,21 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         
         delegate = self
         
+        if SettingsManager.shared.isDarkModeEnabled {
+            browserUserInterfaceStyle = .dark
+        } else {
+            browserUserInterfaceStyle = .white
+        }
+        
         allowsDocumentCreation = true
         allowsPickingMultipleItems = false
         additionalTrailingNavigationBarButtonItems = [UIBarButtonItem(image: UIImage(named: "www"), style: .plain, target: self, action: #selector(showLocalWebServer))]
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        SettingsManager.shared.delegate = self
     }
     
     // MARK: Document browser view controller delegate
@@ -101,6 +113,16 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return transitionController
+    }
+    
+    // MARK: - Settings delegate
+    
+    func settings(_ settings: SettingsManager, didToggleDarkMode darkMode: Bool) {
+        if darkMode {
+            browserUserInterfaceStyle = .dark
+        } else {
+            browserUserInterfaceStyle = .white
+        }
     }
 }
 

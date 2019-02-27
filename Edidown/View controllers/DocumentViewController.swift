@@ -14,7 +14,7 @@ import SafariServices
 import MobileCoreServices
 
 /// The View controller for editing a Markdown file.
-class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, SettingsDelegate {
     
     /// Returns a newly initialized instance from Storyboard.
     static func makeViewController() -> DocumentViewController {
@@ -64,11 +64,14 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
             let layoutManager = NSLayoutManager()
             if pathExtension == "md" || pathExtension == "markdown" {
                 textStorage = Storage()
-                let theme = Theme(themePath: Bundle.main.path(forResource: "themes/one-light", ofType: "json") ?? Bundle.main.bundleURL.appendingPathComponent("themes/one-light.json").path)
-                (textStorage as! Storage).theme = theme
+                (textStorage as! Storage).theme = Theme(themePath: Bundle.main.path(forResource: "themes/\(themeName)", ofType: "json") ?? Bundle.main.bundleURL.appendingPathComponent("themes/\(themeName).json").path)
             } else {
                 textStorage = CodeAttributedString()
-                (textStorage as! CodeAttributedString).highlightr.setTheme(to: "xcode")
+                if SettingsManager.shared.isDarkModeEnabled {
+                    (textStorage as! CodeAttributedString).highlightr.setTheme(to: themeName)
+                } else {
+                    (textStorage as! CodeAttributedString).highlightr.setTheme(to: themeName)
+                }
             }
             
             textStorage.addLayoutManager(layoutManager)
@@ -90,9 +93,6 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
             textView.isHidden = true
             textView.smartDashesType = .no
             textView.smartQuotesType = .no
-            view.addSubview(textView)
-            
-            textView.text = document.text
             
             if !isScript {
                 textView.autocorrectionType = .default
@@ -117,6 +117,8 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                         (textStorage as? CodeAttributedString)?.language = languagesForFile[0]
                     }
                 }
+                
+                textView.backgroundColor = (textStorage as? CodeAttributedString)?.highlightr.theme.themeBackgroundColor
             }
         }
     }
@@ -124,6 +126,25 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     /// The path extension of `document`.
     var pathExtension: String {
         return document.fileURL.pathExtension.lowercased()
+    }
+    
+    /// The name of the theme to use.
+    var themeName: String {
+        if textStorage is Storage {
+            if SettingsManager.shared.isDarkModeEnabled {
+                return "one-dark"
+            } else {
+                return "one-light"
+            }
+        } else if textStorage is CodeAttributedString {
+            if SettingsManager.shared.isDarkModeEnabled {
+                return "atelier-cave-dark"
+            } else {
+                return "xcode"
+            }
+        } else {
+            return ""
+        }
     }
     
     /// Picks an image for embedding it.
@@ -331,12 +352,40 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let txtView = textView, txtView.superview == nil {
+            view.addSubview(txtView)
+            textView.text = document.text
+            view.backgroundColor = txtView.backgroundColor
+        }
+        
+        if SettingsManager.shared.isDarkModeEnabled {
+            navigationController?.navigationBar.barStyle = .black
+        } else {
+            navigationController?.navigationBar.barStyle = .default
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        SettingsManager.shared.delegate = self
         
         textView.isHidden = false
         textView.frame = view.safeAreaLayoutGuide.layoutFrame
         webView.frame = textView.frame
+        
+        if SettingsManager.shared.isDarkModeEnabled {
+            textView.keyboardAppearance = .dark
+        } else {
+            textView.keyboardAppearance = .default
+        }
+        
+        if let txtView = textView, txtView.superview == nil {
+            view.addSubview(txtView)
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -430,6 +479,28 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
             } catch {
                 self.presentError(error, withTitle: "Error importing image!")
             }
+        }
+    }
+    
+    // MARK: - Settings delegate
+    
+    func settings(_ settings: SettingsManager, didToggleDarkMode darkMode: Bool) {
+        
+        if let mdStorage = textStorage as? Storage {
+            mdStorage.theme = Theme(themePath: Bundle.main.path(forResource: "themes/\(themeName)", ofType: "json") ?? Bundle.main.bundleURL.appendingPathComponent("themes/\(themeName).json").path)
+        } else if let codeStorage = textStorage as? CodeAttributedString {
+            codeStorage.highlightr.setTheme(to: themeName)
+            textView.backgroundColor = codeStorage.highlightr.theme.themeBackgroundColor
+        }
+        
+        view.backgroundColor = textView.backgroundColor
+        
+        if darkMode {
+            textView.keyboardAppearance = .dark
+            navigationController?.navigationBar.barStyle = .black
+        } else {
+            textView.keyboardAppearance = .default
+            navigationController?.navigationBar.barStyle = .default
         }
     }
 }

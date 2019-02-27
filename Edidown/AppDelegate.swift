@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        window?.accessibilityIgnoresInvertColors = true
         window?.tintColor = UIColor(named: "TintColor")
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { (_, _) in }
