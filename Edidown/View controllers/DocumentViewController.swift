@@ -13,6 +13,24 @@ import Highlightr
 import SafariServices
 import MobileCoreServices
 
+fileprivate extension UIView { // Taken from https://stackoverflow.com/a/54757469/7515957
+    func setIsHidden(_ hidden: Bool, animated: Bool) {
+        if animated {
+            if self.isHidden && !hidden {
+                self.alpha = 0.0
+                self.isHidden = false
+            }
+            UIView.animate(withDuration: 0.2, animations: {
+                self.alpha = hidden ? 0.0 : 1.0
+            }) { (complete) in
+                self.isHidden = hidden
+            }
+        } else {
+            self.isHidden = hidden
+        }
+    }
+}
+
 /// The View controller for editing a Markdown file.
 class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, SettingsDelegate {
     
@@ -90,7 +108,6 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
             }
             
             textView = UITextView(frame: view.safeAreaLayoutGuide.layoutFrame, textContainer: textContainer)
-            textView.isHidden = true
             textView.smartDashesType = .no
             textView.smartQuotesType = .no
             
@@ -357,6 +374,8 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        edgesForExtendedLayout = []
+        
         segmentedControl.isHidden = true
         
         webView = WKWebView(frame: .zero)
@@ -374,9 +393,13 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         super.viewWillAppear(animated)
         
         if let txtView = textView, txtView.superview == nil {
-            view.addSubview(txtView)
-            textView.text = document.text
             view.backgroundColor = txtView.backgroundColor
+            txtView.isHidden = true
+            txtView.frame = view.safeAreaLayoutGuide.layoutFrame
+            view.addSubview(txtView)
+            
+            txtView.text = document.text
+            txtView.setIsHidden(false, animated: true)
         }
         
         if SettingsManager.shared.isDarkModeEnabled {
@@ -391,7 +414,6 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         
         SettingsManager.shared.delegate = self
         
-        textView.isHidden = false
         textView.frame = view.safeAreaLayoutGuide.layoutFrame
         webView.frame = textView.frame
         
@@ -399,10 +421,6 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
             textView.keyboardAppearance = .dark
         } else {
             textView.keyboardAppearance = .default
-        }
-        
-        if let txtView = textView, txtView.superview == nil {
-            view.addSubview(txtView)
         }
     }
     
