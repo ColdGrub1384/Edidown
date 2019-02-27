@@ -35,7 +35,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         
         allowsDocumentCreation = true
         allowsPickingMultipleItems = false
-        additionalTrailingNavigationBarButtonItems = [UIBarButtonItem(image: UIImage(named: "www"), style: .plain, target: self, action: #selector(showLocalWebServer))]
+        additionalLeadingNavigationBarButtonItems = [UIBarButtonItem(image: UIImage(named: "www"), style: .plain, target: self, action: #selector(showLocalWebServer))]
     }
     
     override func viewDidAppear(_ animated: Bool) {
