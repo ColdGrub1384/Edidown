@@ -197,8 +197,13 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        guard let url = self.templatesURL[self.templatesName[self.templatesName.keys.sorted(by: { $0.lowercased() < $1.lowercased() })[indexPath.section]]?[indexPath.row] ?? ""] else {
+        guard var url = self.templatesURL[self.templatesName[self.templatesName.keys.sorted(by: { $0.lowercased() < $1.lowercased() })[indexPath.section]]?[indexPath.row] ?? ""] else {
             return
+        }
+        
+        if !FileManager.default.fileExists(atPath: url.path) {
+            url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(url.lastPathComponent)
+            FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil)
         }
         
         dismiss(animated: true) {
@@ -212,13 +217,13 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
                 if title.isEmpty {
                     title = "Untitled"
                 }
-                let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(title).appendingPathExtension(url.pathExtension)
-                if FileManager.default.fileExists(atPath: url.path) {
-                    try? FileManager.default.removeItem(at: url)
+                let newURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(title).appendingPathExtension(url.pathExtension)
+                if FileManager.default.fileExists(atPath: newURL.path) {
+                    try? FileManager.default.removeItem(at: newURL)
                 }
                 do {
-                    try FileManager.default.copyItem(at: url, to: url)
-                    self.importHandler?(url, .copy)
+                    try FileManager.default.copyItem(at: url, to: newURL)
+                    self.importHandler?(newURL, .copy)
                 } catch {
                     UIApplication.shared.keyWindow?.rootViewController?.presentError(error, withTitle: "Error copying template!")
                 }
