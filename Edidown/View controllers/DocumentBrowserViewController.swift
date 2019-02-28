@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import QuickLook
 import SafariServices
 
 /// The main document browser.
-class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate, UIViewControllerTransitioningDelegate, SettingsDelegate {
+class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate, UIViewControllerTransitioningDelegate, QLPreviewControllerDelegate, QLPreviewControllerDataSource, SettingsDelegate {
+    
+    private var previewingURL: URL?
     
     /// Transition controller for presenting and dismissing View controllers.
     var transitionController: UIDocumentBrowserTransitionController?
@@ -82,6 +85,19 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     ///     - documentURL: The URL to present.
     func presentDocument(at documentURL: URL) {
         
+        _ = documentURL.startAccessingSecurityScopedResource()
+        
+        previewingURL = documentURL
+        
+        var isDir: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: documentURL.path, isDirectory: &isDir), !isDir.boolValue else {
+            let controller = QLPreviewController()
+            controller.dataSource = self
+            controller.delegate = self
+            present(controller, animated: true, completion: nil)
+            return
+        }
+        
         let documentViewController = DocumentViewController.makeViewController()
         
         let doc = Document(fileURL: documentURL)
@@ -100,7 +116,10 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
                 documentViewController.document = doc
                 self.present(vc, animated: true, completion: nil)
             } else {
-                self.presentMessage("An error occurred while reading file.", withTitle: "Error reading file!")
+                let controller = QLPreviewController()
+                controller.dataSource = self
+                controller.delegate = self
+                self.present(controller, animated: true, completion: nil)
             }
         })
     }
@@ -123,6 +142,16 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         } else {
             browserUserInterfaceStyle = .white
         }
+    }
+    
+    // MARK: - Preview controller data source
+    
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return 1
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return (previewingURL as QLPreviewItem?) ?? URL(fileURLWithPath: "/") as QLPreviewItem
     }
 }
 
