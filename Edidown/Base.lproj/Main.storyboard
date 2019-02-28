@@ -78,11 +78,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="gx5-Qu-POS">
-                                <rect key="frame" x="32" y="64" width="311" height="29"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="81S-Dg-k8f"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="166" id="hiL-NI-huu"/>
-                                </constraints>
+                                <rect key="frame" x="16" y="64" width="343" height="29"/>
                                 <segments>
                                     <segment title="Markdown"/>
                                     <segment title="HTML"/>
@@ -122,12 +118,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="DUw-bv-1dL" firstAttribute="top" secondItem="gx5-Qu-POS" secondAttribute="bottom" constant="8" symbolic="YES" id="DQB-JH-gfc"/>
-                            <constraint firstItem="gx5-Qu-POS" firstAttribute="centerX" secondItem="DUw-bv-1dL" secondAttribute="centerX" id="UOJ-vA-8aF"/>
-                            <constraint firstItem="gx5-Qu-POS" firstAttribute="top" secondItem="rJE-zQ-OH2" secondAttribute="top" id="a7G-VG-ffN"/>
-                            <constraint firstItem="DUw-bv-1dL" firstAttribute="trailing" secondItem="Jn5-G7-yjG" secondAttribute="trailingMargin" id="igr-yJ-M9f"/>
-                            <constraint firstItem="DUw-bv-1dL" firstAttribute="leading" secondItem="Jn5-G7-yjG" secondAttribute="leadingMargin" id="peT-ja-uGl"/>
-                            <constraint firstAttribute="bottom" secondItem="DUw-bv-1dL" secondAttribute="bottom" constant="20" symbolic="YES" id="vF4-gU-ogG"/>
+                            <constraint firstItem="gx5-Qu-POS" firstAttribute="top" secondItem="rJE-zQ-OH2" secondAttribute="top" id="35P-PT-vBu"/>
+                            <constraint firstItem="gx5-Qu-POS" firstAttribute="leading" secondItem="Jn5-G7-yjG" secondAttribute="leadingMargin" id="3ie-pY-BV2"/>
+                            <constraint firstItem="gx5-Qu-POS" firstAttribute="trailing" secondItem="Jn5-G7-yjG" secondAttribute="trailingMargin" id="FrC-iF-NVC"/>
+                            <constraint firstItem="gx5-Qu-POS" firstAttribute="leading" secondItem="DUw-bv-1dL" secondAttribute="leading" id="Joi-Za-oob"/>
+                            <constraint firstAttribute="bottom" secondItem="DUw-bv-1dL" secondAttribute="bottom" constant="20" symbolic="YES" id="Kox-iI-yyY"/>
+                            <constraint firstItem="gx5-Qu-POS" firstAttribute="trailing" secondItem="DUw-bv-1dL" secondAttribute="trailing" id="Pbw-6s-xpz"/>
+                            <constraint firstItem="DUw-bv-1dL" firstAttribute="top" secondItem="gx5-Qu-POS" secondAttribute="bottom" constant="8" symbolic="YES" id="lN0-SO-dbw"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rJE-zQ-OH2"/>
                     </view>
@@ -145,7 +142,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nUo-Th-qhL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1757.9710144927537" y="653.804347826087"/>
+            <point key="canvasLocation" x="1757.5999999999999" y="653.52323838080963"/>
         </scene>
     </scenes>
 </document>

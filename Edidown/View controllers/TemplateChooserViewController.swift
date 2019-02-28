@@ -23,6 +23,9 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
         /// Code.
         case code
         
+        /*/// Math tex.
+        case mathTex*/
+        
         /// A plain text document.
         case txt
     }
@@ -102,6 +105,13 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
             for file in templatesDict {
                 templates[file.key] = templatesURL.appendingPathComponent(file.value)
             }
+        /*} else if type == .mathTex, let templatesDict = NSDictionary(contentsOf: plistURL)?["Tex"] as? [String:String] {
+            
+            templatesURL.appendPathComponent("Tex")
+            
+            for file in templatesDict {
+                templates[file.key] = templatesURL.appendingPathComponent(file.value)
+            }*/
         } else if type == .txt, let templatesDict = NSDictionary(contentsOf: plistURL)?["TXT"] as? [String:String] {
             
             templatesURL.appendPathComponent("TXT")

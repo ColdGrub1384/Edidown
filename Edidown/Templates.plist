@@ -7,6 +7,13 @@
 		<key>Blank document</key>
 		<string>Untitled.txt</string>
 	</dict>
+	<key>Tex</key>
+	<dict>
+		<key>Blank document</key>
+		<string>Untitled.tex</string>
+		<key>Standard Deviation</key>
+		<string>Standard Deviation.tex</string>
+	</dict>
 	<key>HTML</key>
 	<dict>
 		<key>Blank document</key>
@@ -19,6 +26,8 @@
 		<string>Table/Untitled.html</string>
 		<key>Skeleton</key>
 		<string>HTML skeleton/Untitled.html</string>
+		<key>LaTex Maths</key>
+		<string>Tex Maths/Untitled.html</string>
 	</dict>
 	<key>Markdown</key>
 	<dict>
@@ -34,6 +43,8 @@
 		<string>Documentation/Untitled.md</string>
 		<key>Example</key>
 		<string>Example/Untitled.md</string>
+		<key>LaTex Maths</key>
+		<string>Tex Maths/Untitled.md</string>
 	</dict>
 </dict>
 </plist>
