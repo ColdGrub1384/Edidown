@@ -32,7 +32,7 @@ fileprivate extension UIView { // Taken from https://stackoverflow.com/a/5475746
 }
 
 /// The View controller for editing a Markdown file.
-class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, SettingsDelegate {
+class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate, SettingsDelegate {
     
     /// Returns a newly initialized instance from Storyboard.
     static func makeViewController() -> DocumentViewController {
@@ -373,6 +373,8 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
             return
         }
         
+        ReviewHelper.shared.saves += 1
+        
         dismiss(animated: true) {
             self.document.text = self.textView.text
             self.document.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: { (success) in
@@ -382,13 +384,20 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                     UIApplication.shared.keyWindow?.rootViewController?.presentMessage("An error occurred while saving '\(self.document!.fileURL.lastPathComponent)'", withTitle: "Error saving file!")
                 }
             })
+            
+            ReviewHelper.shared.requestReview()
         }
     }
+    
+    /// Last used instance.
+    static var shared: DocumentViewController?
     
     // MARK: - View controller
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        DocumentViewController.shared = self
         
         edgesForExtendedLayout = []
         
@@ -409,6 +418,7 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         super.viewWillAppear(animated)
         
         if let txtView = textView, txtView.superview == nil {
+            txtView.delegate = self
             view.backgroundColor = txtView.backgroundColor
             txtView.isHidden = true
             txtView.frame = view.safeAreaLayoutGuide.layoutFrame
@@ -560,6 +570,20 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         
         if !webView.isHidden {
             loadPreview()
+        }
+    }
+    
+    // MARK: - Text view delegate
+    
+    private var isSaving = false
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if !isSaving {
+            isSaving = true
+            document.text = textView.text
+            document.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: { _ in
+                self.isSaving = false
+            })
         }
     }
 }
