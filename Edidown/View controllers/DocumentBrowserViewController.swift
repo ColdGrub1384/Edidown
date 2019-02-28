@@ -52,7 +52,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         let templateChooser = storyboard.instantiateViewController(withIdentifier: "TemplateChooserViewController") as! TemplateChooserViewController
         templateChooser.importHandler = importHandler
         let navVC = UINavigationController(rootViewController: templateChooser)
-        navVC.modalPresentationStyle = .formSheet
+        navVC.modalPresentationStyle = .pageSheet
         navVC.modalTransitionStyle = .crossDissolve
         present(navVC, animated: true, completion: nil)
     }

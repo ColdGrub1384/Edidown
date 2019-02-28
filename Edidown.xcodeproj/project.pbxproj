@@ -23,6 +23,9 @@
 		C906D3922222BFA300318ADF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C906D3752222BFA200318ADF /* Theme.swift */; };
 		C906D39E2222C55C00318ADF /* themes in Resources */ = {isa = PBXBuildFile; fileRef = C906D39D2222C55C00318ADF /* themes */; };
 		C93634D021BC6EEA00785AC8 /* langs.plist in Resources */ = {isa = PBXBuildFile; fileRef = C93634C621BC6EEA00785AC8 /* langs.plist */; };
+		C943BD7722273F73007860A8 /* MathJax in Resources */ = {isa = PBXBuildFile; fileRef = C943BD6D22273F73007860A8 /* MathJax */; };
+		C943BD792228211F007860A8 /* tex_body.html in Resources */ = {isa = PBXBuildFile; fileRef = C943BD782228211E007860A8 /* tex_body.html */; };
+		C943BD7B222823BA007860A8 /* styles.css in Resources */ = {isa = PBXBuildFile; fileRef = C943BD7A222823BA007860A8 /* styles.css */; };
 		C94538A622270F2C0060DC66 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94538A522270F2C0060DC66 /* SettingsManager.swift */; };
 		C987DCEC2175363E00889300 /* ParseMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = C987DCEB2175363E00889300 /* ParseMarkdown.swift */; };
 		C9C552C32175621B00F43B34 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9C552C22175621B00F43B34 /* Settings.bundle */; };
@@ -183,6 +186,9 @@
 		C906D3802222BFA200318ADF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C906D39D2222C55C00318ADF /* themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = themes; sourceTree = "<group>"; };
 		C93634C621BC6EEA00785AC8 /* langs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = langs.plist; sourceTree = "<group>"; };
+		C943BD6D22273F73007860A8 /* MathJax */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MathJax; sourceTree = "<group>"; };
+		C943BD782228211E007860A8 /* tex_body.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = tex_body.html; sourceTree = "<group>"; };
+		C943BD7A222823BA007860A8 /* styles.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = styles.css; sourceTree = "<group>"; };
 		C94538A522270F2C0060DC66 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		C987DCEB2175363E00889300 /* ParseMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseMarkdown.swift; sourceTree = "<group>"; };
 		C9C552C22175621B00F43B34 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -282,12 +288,15 @@
 			isa = PBXGroup;
 			children = (
 				C93634C621BC6EEA00785AC8 /* langs.plist */,
+				C943BD7A222823BA007860A8 /* styles.css */,
 				C9F04F0E2174E66800BDD03E /* body.html */,
+				C943BD782228211E007860A8 /* tex_body.html */,
 				C9030B88217BA715001BDD69 /* index.md */,
 				C9F04EA12173EDFA00BDD03E /* Main.storyboard */,
 				C9F04EA42173EDFC00BDD03E /* Assets.xcassets */,
 				C9F04EA62173EDFC00BDD03E /* LaunchScreen.storyboard */,
 				C9F04EA92173EDFC00BDD03E /* Info.plist */,
+				C943BD6D22273F73007860A8 /* MathJax */,
 				C9F04F182174EAF900BDD03E /* Templates */,
 				C9F04F122174EAA900BDD03E /* Templates.plist */,
 			);
@@ -511,6 +520,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C906D39E2222C55C00318ADF /* themes in Resources */,
+				C943BD792228211F007860A8 /* tex_body.html in Resources */,
+				C943BD7722273F73007860A8 /* MathJax in Resources */,
 				C93634D021BC6EEA00785AC8 /* langs.plist in Resources */,
 				C9F04F192174EAF900BDD03E /* Templates in Resources */,
 				C9F04F0F2174E66800BDD03E /* body.html in Resources */,
@@ -518,6 +529,7 @@
 				C9F04F132174EAA900BDD03E /* Templates.plist in Resources */,
 				C9F04EA52173EDFC00BDD03E /* Assets.xcassets in Resources */,
 				C9F04EA32173EDFA00BDD03E /* Main.storyboard in Resources */,
+				C943BD7B222823BA007860A8 /* styles.css in Resources */,
 				C9C552C32175621B00F43B34 /* Settings.bundle in Resources */,
 				C9030B89217BB5FC001BDD69 /* index.md in Resources */,
 			);

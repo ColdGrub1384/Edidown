@@ -63,6 +63,19 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         }
     }
     
+    /// HTML code to be shown before the Tex content. Put styles and metas.
+    static var texHead: String {
+        do {
+            if let url = Bundle.main.url(forResource: "tex_body", withExtension: "html") {
+                return try String(contentsOf: url)
+            } else {
+                return ""
+            }
+        } catch {
+            return ""
+        }
+    }
+    
     /// The text storage used in `textView`.
     var textStorage: NSTextStorage!
     
@@ -106,6 +119,8 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                 (textStorage as? CodeAttributedString)?.language = "markdown"
             } else if pathExtension == "html" || pathExtension == "htm" {
                 (textStorage as? CodeAttributedString)?.language = "xml"
+            } else if pathExtension == "tex" {
+                (textStorage as? CodeAttributedString)?.language = "tex"
             } else {
                 isScript = true
             }
@@ -114,7 +129,7 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
             textView.smartDashesType = .no
             textView.smartQuotesType = .no
             
-            if !isScript {
+            if !isScript && pathExtension != "tex" {
                 textView.autocorrectionType = .default
                 textView.autocapitalizationType = .sentences
                 textView.smartDashesType = .default
@@ -122,7 +137,9 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                 
                 textView.backgroundColor = (textStorage as? Storage)?.theme?.backgroundColor
             } else {
-                segmentedControl.isHidden = true
+                if pathExtension != "tex" {
+                    segmentedControl.isHidden = true
+                }
                 
                 var i = 0
                 for item in navigationItem.leftBarButtonItems ?? [] {
@@ -319,23 +336,42 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         
         var code = ""
         
-        let foregroundColor = (textStorage as? Storage)?.theme?.body.attributes[.foregroundColor] as? UIColor ?? .black
+        guard let styleURL = Bundle.main.url(forResource: "styles", withExtension: "css"), let style = try? String(contentsOf: styleURL) else {
+            return
+        }
         
-        var r:CGFloat = 0
-        var g:CGFloat = 0
-        var b:CGFloat = 0
-        var a:CGFloat = 0
+        if pathExtension == "md" || pathExtension == "markdown" || pathExtension == "html" || pathExtension == "htm" { // Markdown or HTML
+            
+            let foregroundColor = (textStorage as? Storage)?.theme?.body.attributes[.foregroundColor] as? UIColor ?? .black
+            
+            var r:CGFloat = 0
+            var g:CGFloat = 0
+            var b:CGFloat = 0
+            var a:CGFloat = 0
+            
+            foregroundColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+            
+            let foregroundHex = String(format:"#%06x", (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0)
+            
+            var head = DocumentViewController.htmlHead
+            head = head.replacingOccurrences(of: "%STYLE%", with: style)
+            head = head.replacingOccurrences(of: "%COLOR%", with: foregroundHex)
         
-        foregroundColor.getRed(&r, green: &g, blue: &b, alpha: &a)
-        
-        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
-        
-        var head = DocumentViewController.htmlHead
-        head = head.replacingOccurrences(of: "%COLOR%", with: String(format:"#%06x", rgb))
-        
-        if pathExtension == "md" || pathExtension == "markdown" {
-           code = head+"\n"+ParseMarkdown(textView.text)
-        } else if pathExtension == "html" || pathExtension == "htm" {
+            if pathExtension == "md" || pathExtension == "markdown" {
+            code = head+"\n"+ParseMarkdown(textView.text)
+            } else if pathExtension == "html" || pathExtension == "htm" {
+                code = head+"\n"+textView.text
+            }
+        } else if pathExtension == "tex" { // Tex
+            var head = DocumentViewController.texHead
+            head = head.replacingOccurrences(of: "%STYLE%", with: style)
+            if SettingsManager.shared.isDarkModeEnabled {
+                head = head.replacingOccurrences(of: "%COLOR%", with: "#a1a8b5")
+            } else {
+                head = head.replacingOccurrences(of: "%COLOR%", with: "#000000")
+            }
+            head = head.replacingOccurrences(of: "%MathJax%", with: "\(Bundle.main.url(forResource: "MathJax/MathJax", withExtension: "js") ?? URL(fileURLWithPath: "/"))")
+            
             code = head+"\n"+textView.text
         }
         
