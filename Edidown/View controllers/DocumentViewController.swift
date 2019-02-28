@@ -580,10 +580,13 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     func textViewDidChange(_ textView: UITextView) {
         if !isSaving {
             isSaving = true
-            document.text = textView.text
-            document.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: { _ in
-                self.isSaving = false
-            })
+            DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                self.document.text = textView.text
+                self.document.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: { _ in
+                    self.isSaving = false
+                })
+
+            }
         }
     }
 }
