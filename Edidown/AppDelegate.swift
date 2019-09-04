@@ -19,11 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = DocumentBrowserViewController(forOpeningFilesWithContentTypes: ["public.item"])
-        window?.accessibilityIgnoresInvertColors = true
-        window?.tintColor = UIColor(named: "TintColor")
-        
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { (_, _) in }
         
         // Web server
@@ -45,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(_ app: UIApplication, open inputURL: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    /*func application(_ app: UIApplication, open inputURL: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         // Ensure the URL is a file URL
         guard inputURL.isFileURL else { return false }
                 
@@ -64,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         return true
-    }
+    }*/
 
 
 }

@@ -75,10 +75,23 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     /// The navigation corresponding to the latest preview.
     var previewNavigation: WKNavigation?
     
+    /// Handles state changes on a document..
+    @objc func stateChanged(_ notification: Notification) {
+        textView.isEditable = !(document?.documentState == .editingDisabled)
+    }
+    
     /// The document to edit. This document should already be open. Should not be nil!
     var document: Document! {
         didSet {
+            
             title = document.fileURL.lastPathComponent
+            if #available(iOS 13.0, *) {
+                view.window?.windowScene?.title = title
+            }
+            
+            document?.editor = self
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(stateChanged(_:)), name: UIDocument.stateChangedNotification, object: document)
             
             segmentedControl.isHidden = false
             
@@ -88,8 +101,12 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                 (textStorage as! Storage).theme = Theme(themePath: Bundle.main.path(forResource: "themes/\(themeName)", ofType: "json") ?? Bundle.main.bundleURL.appendingPathComponent("themes/\(themeName).json").path)
             } else {
                 textStorage = CodeAttributedString()
-                if SettingsManager.shared.isDarkModeEnabled {
-                    (textStorage as! CodeAttributedString).highlightr.setTheme(to: themeName)
+                if #available(iOS 12.0, *) {
+                    if traitCollection.userInterfaceStyle == .dark {
+                        (textStorage as! CodeAttributedString).highlightr.setTheme(to: themeName)
+                    } else {
+                        (textStorage as! CodeAttributedString).highlightr.setTheme(to: themeName)
+                    }
                 } else {
                     (textStorage as! CodeAttributedString).highlightr.setTheme(to: themeName)
                 }
@@ -146,6 +163,8 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                 textView.smartDashesType = .no
                 textView.smartQuotesType = .no
                 
+                textView.isEditable = !(document?.documentState == .editingDisabled)
+                
                 // Syntax coloring
                 
                 let languages = NSDictionary(contentsOf: Bundle.main.bundleURL.appendingPathComponent("langs.plist"))! as! [String:[String]] // List of languages associated by file extensions
@@ -169,14 +188,22 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     /// The name of the theme to use.
     var themeName: String {
         if textStorage is Storage {
-            if SettingsManager.shared.isDarkModeEnabled {
-                return "one-dark"
+            if #available(iOS 12.0, *) {
+                if traitCollection.userInterfaceStyle == .dark {
+                    return "one-dark"
+                } else {
+                    return "one-light"
+                }
             } else {
                 return "one-light"
             }
         } else if textStorage is CodeAttributedString {
-            if SettingsManager.shared.isDarkModeEnabled {
-                return "atelier-cave-dark"
+            if #available(iOS 12.0, *) {
+                if traitCollection.userInterfaceStyle == .dark {
+                    return "atelier-cave-dark"
+                } else {
+                    return "xcode"
+                }
             } else {
                 return "xcode"
             }
@@ -320,20 +347,24 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         var code = ""
         
         let foregroundHex: String
-        if SettingsManager.shared.isDarkModeEnabled {
-            foregroundHex = "#a1a8b5"
+        if #available(iOS 12.0, *) {
+            if traitCollection.userInterfaceStyle == .dark {
+                foregroundHex = "#a1a8b5"
+            } else {
+                foregroundHex = "#000000"
+            }
         } else {
             foregroundHex = "#000000"
         }
-            
+        
         var head = DocumentViewController.htmlHead
         head = head.replacingOccurrences(of: "%COLOR%", with: foregroundHex)
         head = head.replacingOccurrences(of: "%MathJax%", with: "\(Bundle.main.url(forResource: "MathJax/MathJax", withExtension: "js") ?? URL(fileURLWithPath: "/"))")
     
         if pathExtension == "md" || pathExtension == "markdown" {
-            code = head.replacingOccurrences(of: "%BODY%", with: ParseMarkdown(textView.text))
+            code = head+"<body>\n\n"+ParseMarkdown(textView.text)+"\n\n</body>"
         } else if pathExtension == "html" || pathExtension == "htm" {
-            code = head.replacingOccurrences(of: "%BODY%", with: textView.text)
+            code = head+"<body>\n\n"+textView.text+"\n\n</body>"
         }
         
         let docs = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)[0]
@@ -427,12 +458,6 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
             txtView.text = document.text
             txtView.setIsHidden(false, animated: true)
         }
-        
-        if SettingsManager.shared.isDarkModeEnabled {
-            navigationController?.navigationBar.barStyle = .black
-        } else {
-            navigationController?.navigationBar.barStyle = .default
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -443,10 +468,18 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         textView.frame = view.safeAreaLayoutGuide.layoutFrame
         webView.frame = textView.frame
         
-        if SettingsManager.shared.isDarkModeEnabled {
-            textView.keyboardAppearance = .dark
-        } else {
-            textView.keyboardAppearance = .default
+        textView.keyboardAppearance = .default
+        
+        if #available(iOS 13.0, *) {
+            view.window?.windowScene?.title = title
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if #available(iOS 13.0, *) {
+            view.window?.windowScene?.title = nil
         }
     }
     
@@ -466,6 +499,14 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
                 self.textView.becomeFirstResponder()
             }
         }) // TODO: Anyway to to it without a timer?
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if #available(iOS 13.0, *) {
+            settings(SettingsManager.shared, didToggleDarkMode: (traitCollection.userInterfaceStyle == .dark))
+        }
     }
     
     // MARK: - Keyboard
@@ -558,16 +599,6 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
         
         view.backgroundColor = textView.backgroundColor
         
-        if darkMode {
-            textView.keyboardAppearance = .dark
-            navigationController?.navigationBar.barStyle = .black
-            (presentingViewController as? UIDocumentBrowserViewController)?.browserUserInterfaceStyle = .dark
-        } else {
-            textView.keyboardAppearance = .default
-            navigationController?.navigationBar.barStyle = .default
-            (presentingViewController as? UIDocumentBrowserViewController)?.browserUserInterfaceStyle = .white
-        }
-        
         if !webView.isHidden {
             loadPreview()
         }
@@ -575,18 +606,8 @@ class DocumentViewController: UIViewController, WKNavigationDelegate, UINavigati
     
     // MARK: - Text view delegate
     
-    private var isSaving = false
-    
-    func textViewDidChange(_ textView: UITextView) {
-        if !isSaving {
-            isSaving = true
-            DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-                self.document.text = textView.text
-                self.document.save(to: self.document!.fileURL, for: .forOverwriting, completionHandler: { _ in
-                    self.isSaving = false
-                })
-
-            }
-        }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        document.text = textView.text
+        document.save(to: document!.fileURL, for: .forOverwriting, completionHandler: nil)
     }
 }

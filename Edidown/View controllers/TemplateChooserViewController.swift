@@ -43,7 +43,12 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
             templatesName = [:]
             templatesURL = [:]
             
-            let activityIndicator = UIActivityIndicatorView(style: .gray)
+            let activityIndicator: UIActivityIndicatorView
+            if #available(iOS 13.0, *) {
+                activityIndicator = UIActivityIndicatorView(style: .medium)
+            } else {
+                activityIndicator = UIActivityIndicatorView(style: .gray)
+            }
             activityIndicator.startAnimating()
             
             tableView.reloadData()
@@ -159,6 +164,8 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
         }
     }
     
+    private var selectedTemplate = false
+    
     // MARK: - View controller
     
     override func viewDidLoad() {
@@ -168,6 +175,14 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
         tableView.tableFooterView = UIView()
         tableView.dataSource = self
         tableView.delegate = self
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        if !selectedTemplate {
+            importHandler?(nil, .none)
+        }
     }
     
     // MARK: - Table view data source
@@ -215,6 +230,8 @@ class TemplateChooserViewController: UIViewController, UITableViewDataSource, UI
             url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(url.lastPathComponent)
             FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil)
         }
+        
+        selectedTemplate = true
         
         dismiss(animated: true) {
             

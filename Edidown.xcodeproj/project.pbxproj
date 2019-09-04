@@ -27,6 +27,7 @@
 		C94538A622270F2C0060DC66 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94538A522270F2C0060DC66 /* SettingsManager.swift */; };
 		C966EC0522289C7C00BC63A6 /* ReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C966EBFB22289C7B00BC63A6 /* ReviewHelper.swift */; };
 		C987DCEC2175363E00889300 /* ParseMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = C987DCEB2175363E00889300 /* ParseMarkdown.swift */; };
+		C98BAD4E231F46D200BAD592 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98BAD4D231F46D100BAD592 /* SceneDelegate.swift */; };
 		C9C552C32175621B00F43B34 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9C552C22175621B00F43B34 /* Settings.bundle */; };
 		C9EF7DE7217502E40055DFDF /* HeadersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */; };
 		C9EF7DEC217512190055DFDF /* String+ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF7DEB217512190055DFDF /* String+ranges.swift */; };
@@ -189,6 +190,7 @@
 		C94538A522270F2C0060DC66 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		C966EBFB22289C7B00BC63A6 /* ReviewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewHelper.swift; sourceTree = "<group>"; };
 		C987DCEB2175363E00889300 /* ParseMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseMarkdown.swift; sourceTree = "<group>"; };
+		C98BAD4D231F46D100BAD592 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C9C552C22175621B00F43B34 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		C9EF7DE6217502E40055DFDF /* HeadersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersTableViewController.swift; sourceTree = "<group>"; };
 		C9EF7DEB217512190055DFDF /* String+ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ranges.swift"; sourceTree = "<group>"; };
@@ -324,6 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				C9F04E992173EDFA00BDD03E /* AppDelegate.swift */,
+				C98BAD4D231F46D100BAD592 /* SceneDelegate.swift */,
 				C987DCE6217531A700889300 /* View controllers */,
 				C987DCE9217531C300889300 /* Extensions */,
 				C9F04E9F2173EDFA00BDD03E /* Document.swift */,
@@ -581,6 +584,7 @@
 				C9030B8B217BC34E001BDD69 /* WebServerManager.swift in Sources */,
 				C94538A622270F2C0060DC66 /* SettingsManager.swift in Sources */,
 				C906D3912222BFA300318ADF /* Style.swift in Sources */,
+				C98BAD4E231F46D200BAD592 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,6 +757,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.marcela.ada.Edidown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -773,6 +778,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.marcela.ada.Edidown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;

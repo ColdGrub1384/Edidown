@@ -23,18 +23,15 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         present(SFSafariViewController(url: WebServerManager.shared.serverURL ?? URL(string: "http://localhost")!), animated: true, completion: nil)
     }
     
+    /// A document to open when the view appears.
+    var documentURL: URL?
+    
     // MARK: - Document browser view controller
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         delegate = self
-        
-        if SettingsManager.shared.isDarkModeEnabled {
-            browserUserInterfaceStyle = .dark
-        } else {
-            browserUserInterfaceStyle = .white
-        }
         
         allowsDocumentCreation = true
         allowsPickingMultipleItems = false
@@ -45,6 +42,11 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         super.viewDidAppear(animated)
         
         SettingsManager.shared.delegate = self
+        
+        if let doc = documentURL {
+            self.documentURL = nil
+            presentDocument(at: doc)
+        }
     }
     
     // MARK: Document browser view controller delegate
