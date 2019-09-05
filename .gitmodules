@@ -7,3 +7,6 @@
 [submodule "Notepad"]
 	path = Notepad
 	url = https://github.com/ruddfawcett/Notepad.git
+[submodule "Highlightr"]
+	path = Highlightr
+	url = https://github.com/ColdGrub1384/Highlightr.git
