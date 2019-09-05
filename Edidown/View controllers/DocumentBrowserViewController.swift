@@ -24,7 +24,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     }
     
     /// A document to open when the view appears.
-    var documentURL: URL? = Bundle.main.url(forResource: "Templates/Markdown/Example/Untitled", withExtension: "md")
+    var documentURL: URL?
     
     // MARK: - Document browser view controller
     
