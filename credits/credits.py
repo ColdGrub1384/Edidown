@@ -27,6 +27,11 @@ DESCRIPTION = """Generate a `Settings.bundle` friendly plist file from all
  'LICENSE.*' files in a given directory. Inspired by JosephH and Sean's
  comments on stackoverflow: http://stackoverflow.com/q/6428353"""
 
+try:
+    unicode  # Python 2
+except NameError:
+    unicode = str  # Python 3
+
 
 class MultipleOption(Option):
     ACTIONS = Option.ACTIONS + ("extend",)
